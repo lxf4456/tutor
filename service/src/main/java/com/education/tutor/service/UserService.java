@@ -14,7 +14,6 @@ import com.education.tutor.db.mapper.UserMapper;
 import com.education.tutor.vo.UserPrincipalVO;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.rong.models.CodeSuccessResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -60,8 +59,7 @@ public class UserService {
 
     @Autowired
     StringRedisTemplate redisTemplate;
-    @Autowired
-    ImRongService imRongService;
+
     @Value("${im.user.prefix}")
     String imUserPrefix;
 
@@ -162,11 +160,7 @@ public class UserService {
         record.setUpdatedAt(new Date());
         tblUserMainMapper.updateByPrimaryKey(record);
         reloadRedis(user.getBasic().getUsername());
-        if (StringUtils.isNotEmpty(req.getNickName())) {
-            CodeSuccessResult codeSuccessResult = imRongService
-                    .refreshUserInfo(imUserPrefix + user.getBasic().getUsername(), req.getNickName(), req.getAvatar());
-            logger.debug("codeSuccessResult:" + codeSuccessResult.getCode() + "====" + codeSuccessResult.getErrorMessage());
-        }
+
 
 
         ModifyMyInfoRes res = new ModifyMyInfoRes();
@@ -319,46 +313,6 @@ public class UserService {
         ptn.getChildren().add(child);
         logger.debug("--> add org child " + child.getId() + " to parent " + ptn.getId());
     }
-
-
-    public BaseRes updateRong() {
-        BaseRes res = new BaseRes();
-        TblUserMainExample example = new TblUserMainExample();
-        example.createCriteria();
-        List<TblUserMain> records = tblUserMainMapper.selectByExample(example);
-        for (TblUserMain tblUserMain : records) {
-            CodeSuccessResult codeSuccessResult = null;
-            try {
-                codeSuccessResult = imRongService.refreshUserInfo(imUserPrefix + tblUserMain.getUsername(),
-                        tblUserMain.getNickName(), tblUserMain.getAvatar());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            logger.debug(
-                    "codeSuccessResult:" + codeSuccessResult.getCode() + "====" + codeSuccessResult.getErrorMessage());
-
-        }
-
-        res.setCode(0);
-        return res;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public UserBasic setNickName(UserBasic user) {

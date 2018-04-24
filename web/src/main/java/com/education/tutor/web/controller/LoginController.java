@@ -10,7 +10,6 @@ import com.education.tutor.web.security.RegiAuthenticationToken;
 import com.education.tutor.web.sso.SsoClientDeprecated;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.rong.models.TokenResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -58,10 +57,6 @@ public class LoginController extends AuthenticatedController{
 
 	@Autowired
 	RegiAuthenticationProvider regiAuthenticationProvider;
-
-	@Autowired
-	ImRongService imRongService;
-
 	@Autowired
 	UserService userService;
 
@@ -166,32 +161,7 @@ public class LoginController extends AuthenticatedController{
 //				res.setUserName(token.getUserPrincipal().getBasic().getUsername());
 //				res.setCountryCode(token.getUserPrincipal().getBasic().getCountryCode());
 //				res.setLang(FieldConstants.USER_MAIN_LANG.values()[token.getUserPrincipal().getBasic().getUserLang().intValue()].name());
-				try {
-					String pushToken = token.getUserPrincipal().getBasic().getPushToken();
-					if (pushToken == null || pushToken.length() == 0) {
-						TokenResult tr = imRongService.getTokenResult(
-								imUserPrefix + token.getUserPrincipal().getBasic().getUsername(),
-								StringUtils.isNotEmpty(res.getNickName()) ? res.getNickName()
-										: token.getUserPrincipal().getBasic().getUsername(),
-								res.getAvatar() == null ? "" : res.getAvatar());
-						logger.info("get im token:" + tr.getToken());
-						loginService.updatePushToken(token.getUserPrincipal().getBasic(), tr.getToken());
-						res.setImToken(tr.getToken());
 
-						// 下发欢迎信息
-					} else {
-						res.setImToken(token.getUserPrincipal().getBasic().getPushToken());
-					}
-
-					userService.setUserDevice(token.getUserPrincipal(),userAgent,commonService.getIpAddr(request));
-
-					imRongService.refreshUserInfo(imUserPrefix + token.getUserPrincipal().getBasic().getUsername(), StringUtils.isNotEmpty(token.getUserPrincipal().getBasic().getNickName())?token.getUserPrincipal().getBasic().getNickName():token.getUserPrincipal().getBasic().getUsername(), token.getUserPrincipal().getBasic().getAvatar() == null ? "" : token.getUserPrincipal().getBasic().getAvatar());
-				} catch (Exception e) {
-					logger.error(e.getMessage());
-					e.printStackTrace();
-					res.setCode(4107);
-					res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
-				}
 			} else {
 				res.setCode(4104);
 				res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));

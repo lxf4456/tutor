@@ -69,9 +69,6 @@ public class CommonService {
     @Autowired
     CommonMapper commonMapper;
 
-    @Autowired
-    ImRongService imRongService;
-
     @Value("${attachment.download.prefix}")
     String attachmentDownloadPrefix;
 

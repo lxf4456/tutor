@@ -11,7 +11,6 @@ import com.education.tutor.db.mapper.TblDataRegionMapper;
 import com.education.tutor.db.mapper.TblUserMainMapper;
 import com.education.tutor.util.ImageUtil;
 import com.education.tutor.vo.ImageVO;
-import io.rong.models.TokenResult;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -72,9 +71,6 @@ public class LoginService {
 
     @Value("${im.user.prefix}")
     String imUserPrefix;
-
-    @Autowired
-    ImRongService imRongService;
 
     @Autowired
     TblCountryCodeMapper tblCountryCodeMapper;
@@ -231,23 +227,12 @@ public class LoginService {
         record.setCountryCode(req.getCountryCode());
         record.setEmail(email);
         record.setMobile(mobile);
-        if (username == null)
+        if (username == null) {
             username = email;
+        }
         record.setUsername(username);
         record.setUserLang((short) FieldConstants.USER_MAIN_LANG.valueOf(req.getLang()).ordinal());
 
-//        int len = username.length();
-//        if (username.contains("@")) {
-//            record.setNickName(
-//                    username.substring(0, 2) + "***********************************************".substring(0, len - 5)
-//                            + username.substring(len - 3, len));
-//        } else {
-//            String temp = username.substring(username.indexOf('-') + 1);
-//            len = temp.length();
-//            record.setNickName(
-//                    temp.substring(0, 2) + "***********************************************".substring(0, len - 5)
-//                            + temp.substring(len - 3, len));
-//        }
         record.setPassword(req.getPassword());
         record.setUpdatedBy(req.getUserName());
         record.setCreatedAt(new Date());
@@ -255,15 +240,6 @@ public class LoginService {
 
         int result = tblUserMainMapper.insert(record);
 
-
-        try {
-            TokenResult tr = imRongService.getTokenResult(imUserPrefix + record.getUsername(), StringUtils.isNotEmpty(record.getNickName()) ? record.getNickName() : record.getUsername(), record.getAvatar() == null ? "" : record.getAvatar());
-
-            updatePushToken(record, tr.getToken());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
 
         logger.debug("insert usermain return result: " + result);
