@@ -17,7 +17,7 @@ public class AuthenticatedController {
         UserPrincipalVO user = ((RegiAuthenticationToken) auth).getUserPrincipal();
 
         if (user != null) {
-            req.setLang(FieldConstants.USER_MAIN_LANG.values()[user.getBasic().getUserLang()].name());
+         //   req.setLang(FieldConstants.USER_MAIN_LANG.values()[user.getBasic().getUserLang()].name());
         } else {
             if (!FieldConstants.USER_MAIN_LANG.zh.name().equals(req.getLang())
                     && !FieldConstants.USER_MAIN_LANG.ru.name().equals(req.getLang())

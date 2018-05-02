@@ -25,9 +25,9 @@
 		<parent.version>0.1.0-SNAPSHOT</parent.version>		
 		<spring.profiles.active>dev</spring.profiles.active>
 		<db.driver>com.mysql.jdbc.Driver</db.driver>
-		<db.url>jdbc:mysql://172.18.18.61:3306/oilup?useSSL=false</db.url>
-		<db.username>usroilup</db.username>
-		<db.password>oilupusr</db.password>
+		<db.url>jdbc:mysql://rm-bp12j8jed3n637x6p.mysql.rds.aliyuncs.com:3306/tutor?useSSL=false</db.url>
+		<db.username>tutor</db.username>
+		<db.password>skEHo3c!X154FDfu</db.password>
 	</properties>
 
 	<profiles>

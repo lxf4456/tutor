@@ -1,7 +1,7 @@
 package com.education.tutor.db.mapper;
 
 import com.education.tutor.api.TupleIdValue;
-import com.education.tutor.db.domain.TblGroups;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -31,9 +31,5 @@ public interface LoginMapper {
 	@Select("select count(*) as count from rs_partner rp INNER JOIN user_main um on rp.user_main_id = um.user_main_id and um.`partner_level` > 0 where rp.upper_id = #{upperId}")
 	public Integer getUpPartnerTotal(@Param("upperId") long upperId);
 
-
-
-	@Select("select id, group_name as groupName,group_category as groupCategory from groups where id in (select group_id from group_members where username = #{username})")
-	public List<TblGroups> getGroups(@Param("username") String username);
 	
 }

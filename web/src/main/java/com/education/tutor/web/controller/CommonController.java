@@ -93,17 +93,17 @@ public class CommonController extends AuthenticatedController {
 				byte[] content = file.getBytes();
 				String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 				// fastdfs setup finished uncomment below, replace local file
-				logger.info(user.getBasic().getUsername() + " before save " + file.getOriginalFilename() + " size " + content.length);
+				logger.info(" before save " + file.getOriginalFilename() + " size " + content.length);
 				String relativePath = fastDfsClientService.upload(content, file.getOriginalFilename(), ext,
 						content.length, null);
 				// String relativePath = UUID.randomUUID().toString() + "_" +
 				// file.getOriginalFilename();
 				// Files.write(content, new File("/var/" + relativePath));
-				logger.info(user.getBasic().getUsername() + " after save " + file.getOriginalFilename() + " to "
+				logger.info( " after save " + file.getOriginalFilename() + " to "
 						+ relativePath);
 				String result = commonService.saveAttachment(file.getOriginalFilename(), ext, content.length,
-						file.getContentType(), relativePath, user.getBasic().getUsername(),mates[i]);
-				logger.info(user.getBasic().getUsername() + " save attachment with id=" + result);
+						file.getContentType(), relativePath,"",i);
+				logger.info( " save attachment with id=" + result);
 				Attachment a = new Attachment();
 				a.setId(Long.valueOf(result.split(":")[0]));
 				a.setUrl(attachmentUrlPrefix + result.split(":")[1]);
@@ -114,7 +114,7 @@ public class CommonController extends AuthenticatedController {
 			logger.error(e.getMessage());
 			e.printStackTrace();
 			res.setCode(105);
-			res.setMessage(i18nService.getMessage(res.getCode() + "", user.getBasic().getUsername()));
+			res.setMessage(i18nService.getMessage(res.getCode() + "", ""));
 		}
 		if (res.getCode() == -1) {
 			res.setCode(0);

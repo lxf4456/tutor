@@ -103,8 +103,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 					userDetails = (RegiUserDetails) userDetailService.loadUserByUsername(username);
 					String lang = request.getHeader("lang");
 					if (lang != null) {
-						userDetails.getVo().getBasic()
-								.setUserLang((short) FieldConstants.USER_MAIN_LANG.valueOf(lang).ordinal());
+//						userDetails.getVo().getBasic()
+//								.setUserLang((short) FieldConstants.USER_MAIN_LANG.valueOf(lang).ordinal());
 					}
 				} catch (Exception e) {
 					handleErrorRes(1102, Application.DEFAULT_LANG, response);

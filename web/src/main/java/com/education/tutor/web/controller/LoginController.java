@@ -2,7 +2,10 @@ package com.education.tutor.web.controller;
 
 import com.education.tutor.Application;
 import com.education.tutor.api.login.*;
-import com.education.tutor.service.*;
+import com.education.tutor.service.CommonService;
+import com.education.tutor.service.I18nService;
+import com.education.tutor.service.LoginService;
+import com.education.tutor.service.UserService;
 import com.education.tutor.vo.UserPrincipalVO;
 import com.education.tutor.web.security.JwtTokenUtil;
 import com.education.tutor.web.security.RegiAuthenticationProvider;
@@ -93,16 +96,6 @@ public class LoginController extends AuthenticatedController{
 		return res;
 	}
 
-	@RequestMapping(method = RequestMethod.POST, path = "/phoneCodeList", produces = "application/json")
-	@ResponseBody
-	public PhoneCodeListRes phoneCodeList(@RequestBody PhoneCodeListReq req) {
-		PhoneCodeListRes res = loginService.getPhoneCodeList(req);
-		if (res.getCode() == -1) {
-			res.setCode(0);
-		}
-		return res;
-	}
-
 
 
 	@RequestMapping(method = RequestMethod.POST, path = "/login", produces = "application/json;charset=utf8")
@@ -141,20 +134,20 @@ public class LoginController extends AuthenticatedController{
 			if (authentication != null && authentication.isAuthenticated()) {
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 				RegiAuthenticationToken token = (RegiAuthenticationToken) authentication;
-				Short lang = token.getUserPrincipal().getBasic().getUserLang();
-				if(lang == null ) {
-					userService.setMyLanguage(req.getLang(), token.getUserPrincipal());
-				}
-				res.setAuthorization(token.getJwt());
-				res.setAvatar(token.getUserPrincipal().getBasic().getAvatar());
-				res.setNickName(token.getUserPrincipal().getBasic().getNickName());
-				if (token.getUserPrincipal().getBasic().getGender() == null) {
-					// 3 is unknown
-					res.setSex(0);
-				} else {
-					res.setSex(token.getUserPrincipal().getBasic().getGender() + 1);
-				}
-				res.setUserId(token.getUserPrincipal().getBasic().getUserMainId());
+//				Short lang = token.getUserPrincipal().getBasic().getUserLang();
+//				if(lang == null ) {
+//					userService.setMyLanguage(req.getLang(), token.getUserPrincipal());
+//				}
+//				res.setAuthorization(token.getJwt());
+//				res.setAvatar(token.getUserPrincipal().getBasic().getAvatar());
+//				res.setNickName(token.getUserPrincipal().getBasic().getNickName());
+//				if (token.getUserPrincipal().getBasic().getGender() == null) {
+//					// 3 is unknown
+//					res.setSex(0);
+//				} else {
+////					res.setSex(token.getUserPrincipal().getBasic().getGender() + 1);
+//				}
+////				res.setUserId(token.getUserPrincipal().getBasic().getUserMainId());
 //				res.setPartnerNo(token.getUserPrincipal().getBasic().getPartnerNo());
 //				res.setEmail(token.getUserPrincipal().getBasic().getEmail());
 //				res.setMobile(token.getUserPrincipal().getBasic().getMobile());

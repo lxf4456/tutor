@@ -1,7 +1,6 @@
 package com.education.tutor.web.security;
 
 
-import com.education.tutor.db.mapper.TblUserMainMapper;
 import com.education.tutor.web.sso.SsoClientDeprecated;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,10 +23,6 @@ public class RegiAuthenticationProvider implements AuthenticationProvider {
 
 	@Autowired
 	JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
-	TblUserMainMapper tblUserMainMapper;
-	
 	@Autowired
 	SsoClientDeprecated ssoClient;
 
@@ -80,10 +75,8 @@ public class RegiAuthenticationProvider implements AuthenticationProvider {
 	}
 	
 	private Authentication localCheck(RegiUserDetails user, Authentication authentication) {
-		String storedPassword = user.getVo().getBasic().getPassword();
+		String storedPassword = "";//user.getVo().getBasic().getPassword();
 		if (!passwordEncoder.matches(authentication.getCredentials().toString(), storedPassword)) {
-			logger.info("local auth failed " + authentication.getName() + ":" + authentication.getCredentials() + ", encoded:"
-					+ user.getVo().getBasic().getPassword());
 			authentication.setAuthenticated(false);
 			return authentication; 
 		} else {

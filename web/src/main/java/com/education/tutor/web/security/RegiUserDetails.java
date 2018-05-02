@@ -43,12 +43,14 @@ public class RegiUserDetails implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return vo.getBasic().getPassword();
+		//return vo.getBasic().getPassword();
+		return "";
 	}
 
 	@Override
 	public String getUsername() {
-		return vo.getBasic().getUsername();
+		//return vo.getBasic().getUsername();
+		return "";
 	}
 
 	@Override
@@ -68,7 +70,8 @@ public class RegiUserDetails implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return vo.getBasic().getEnabled() == 1;
+//		return vo.getBasic().getEnabled() == 1;
+		return false;
 	}
 
 }

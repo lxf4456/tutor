@@ -2,7 +2,6 @@ package com.education.tutor.web.controller;
 
 import com.education.tutor.Application;
 import com.education.tutor.api.ErrorRes;
-import com.education.tutor.db.FieldConstants;
 import com.education.tutor.service.I18nService;
 import com.education.tutor.vo.UserPrincipalVO;
 import com.education.tutor.web.security.RegiAuthenticationToken;
@@ -69,7 +68,7 @@ public class ErrorController extends BasicErrorController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			UserPrincipalVO user = ((RegiAuthenticationToken) auth).getUserPrincipal();
-			lang = FieldConstants.USER_MAIN_LANG.values()[(int) user.getBasic().getUserLang()].name();
+			//lang = FieldConstants.USER_MAIN_LANG.values()[(int) user.getBasic().getUserLang()].name();
 		}
 		HttpStatus status = getStatus(request);		
 		res.setHttpStatus(status.ordinal());

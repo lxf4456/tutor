@@ -1,6 +1,6 @@
 package com.education.tutor.service;
 
-import com.education.tutor.db.domain.TblDataRegion;
+import com.education.tutor.db.domain.TblRegion;
 import com.education.tutor.db.mapper.DataRegionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +15,8 @@ public class DataRegionService {
 	@Autowired
 	private DataRegionMapper dataRegionMapper;
 	
-	public TblDataRegion getDataRegionByLang(String name) {
-		List<TblDataRegion> list = dataRegionMapper.getDataRegionByLang(name); 
+	public TblRegion getDataRegionByLang(String name) {
+		List<TblRegion> list = dataRegionMapper.getDataRegionByLang(name);
 		if(list!=null && !list.isEmpty()) {
 			return list.get(0);
 		}
@@ -29,7 +29,7 @@ public class DataRegionService {
         	String areaArr[] = areaEn.split(",");
         	StringBuffer areaBf = new StringBuffer("");
         	if(areaArr!=null && areaArr.length>0) {
-        		TblDataRegion dr1 = getDataRegionByLang(areaArr[0]);
+        		TblRegion dr1 = getDataRegionByLang(areaArr[0]);
         		
         		if(dr1!=null) {
         			if(lang.equals("zh")) {
@@ -38,7 +38,7 @@ public class DataRegionService {
         				areaBf.append(dr1.getNameEn()).append(",");
         			}
         		}
-        		TblDataRegion dr2 = getDataRegionByLang(areaArr[1]);
+        		TblRegion dr2 = getDataRegionByLang(areaArr[1]);
         		if(dr2!=null) {
         			if(lang.equals("zh")) {
         				areaBf.append(dr2.getName()) ;

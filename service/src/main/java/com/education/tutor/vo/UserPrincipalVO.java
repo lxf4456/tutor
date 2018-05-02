@@ -1,9 +1,7 @@
 package com.education.tutor.vo;
 
-import com.education.tutor.db.domain.TblGroups;
+
 import com.education.tutor.db.domain.TblMenu;
-import com.education.tutor.db.domain.TblUserMain;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ public class UserPrincipalVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	TblUserMain basic;
 
 	List<String> roles = new ArrayList<String>();
 
@@ -148,13 +145,13 @@ public class UserPrincipalVO implements Serializable {
 		String permission;
 	}
 
-	public TblUserMain getBasic() {
-		return basic;
-	}
-
-	public void setBasic(TblUserMain basic) {
-		this.basic = basic;
-	}
+//	public TblUserMain getBasic() {
+//		return basic;
+//	}
+//
+//	public void setBasic(TblUserMain basic) {
+//		this.basic = basic;
+//	}
 
 	public List<String> getRoles() {
 		return roles;
@@ -180,15 +177,15 @@ public class UserPrincipalVO implements Serializable {
 		menus.forEach(tm -> {
 			Menu m = new Menu();
 			m.setExpand(tm.getExpand());
-			m.setIconcls(tm.getIconcls());
+//			m.setIconcls(tm.getIconcls());
 			m.setIsShow(tm.getIsShow());
-			m.setMenuId(tm.getMenuId());
-			m.setMenuLang(tm.getMenuLang());
+			m.setMenuId(tm.getId().longValue());
+//			m.setMenuLang(tm.getMenuLang());
 			m.setMenuName(tm.getMenuName());
-			m.setMenuParentId(tm.getMenuParentId());
-			m.setMenuStatus(tm.getMenuStatus());
+//			m.setMenuParentId(tm.getMenuParentId());
+//			m.setMenuStatus(tm.getMenuStatus());
 			m.setMenuType(tm.getMenuType());
-			m.setMenuUrl(tm.getMenuUrl());
+//			m.setMenuUrl(tm.getMenuUrl());
 			m.setPermission(tm.getPermission());
 			m.setSortNo(tm.getSortNo());
 			this.menus.add(m);
@@ -215,19 +212,6 @@ public class UserPrincipalVO implements Serializable {
 			this.roles = roles;
 		}
 	}
-
-	public void setGroups(List<TblGroups> tblgroups) {
-		tblgroups.forEach(group -> {
-			if(group!=null&& StringUtils.isNotEmpty(group.getGroupName())&&StringUtils.isNotEmpty(group.getGroupCategory())) {
-				List rolse = getUserRoles(group.getGroupCategory());
-				rolse.add(group.getGroupName().trim());
-				this.userRoles.put(group.getGroupCategory(), rolse);
-			}
-		});
-	}
-
-
-
 
 	private List<String> getUserRoles(String groupCategory){
 		List<String> mapLt = this.userRoles.get(groupCategory);

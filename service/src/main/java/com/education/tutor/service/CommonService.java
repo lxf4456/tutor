@@ -60,8 +60,6 @@ public class CommonService {
     @Autowired
     TblAttachmentMapper tblAttachmentMapper;
 
-    @Autowired
-    TblUserMainMapper tblUserMainMapper;
 
     @Autowired
     TblSmsLogMapper tblSmsLogMapper;
@@ -120,24 +118,24 @@ public class CommonService {
      * @param userName  用户
      * @return
      */
-    public String saveAttachment(String name, String ext, int size, String mime, String storePath, String userName, String mate) {
+    public String saveAttachment(String name, String ext, int size, String mime, String storePath, String userName, int mate) {
         TblAttachment record = new TblAttachment();
         // default is enabled
-        record.setAttachmentState(FieldConstants.ATTACHMENT_STATE.ENABLED.ordinal());
+        record.setState(FieldConstants.ATTACHMENT_STATE.ENABLED.ordinal());
         // default is public1
         record.setAttachmentType(FieldConstants.ATTACHMENT_TYPE.PUBLIC.ordinal());
         // record.setMetaInfo(""); // MetaInfo currently not supplied
         record.setMimeType(mime);
-        record.setOriginalFilename(name);
-        record.setSize((long) size);
-        record.setUriRelativel(storePath);
-        record.setUriSite(attachmentDownloadPrefix);
+      //  record.setOriginalFilename(name);
+        record.setSize(size);
+        record.setUrlPath(storePath);
+      //  record.setUriSite(attachmentDownloadPrefix);
         record.setUpdatedBy(userName);
         record.setMetaInfo(mate);
         int result = tblAttachmentMapper.insert(record);
         logger.debug("insert attachment record conut = " + result);
-        logger.debug("attachment_id = " + record.getAttachmentId());
-        return record.getAttachmentId() + ":" + record.getUriRelativel();
+        logger.debug("attachment_id = " + record.getId());
+        return record.getId() + ":" + record.getUrlPath();
     }
 
     /**
@@ -153,16 +151,16 @@ public class CommonService {
         logger.info("send sms to " + mobile + " result is " + smsResult);
         // 保存短信发送记录到sms_log
         TblSmsLog record = new TblSmsLog();
-        record.setChannel(smsGateway.getChannelName());
+        record.setSmsChannel(smsGateway.getChannelName());
         record.setCountryCode(countryCode);
         record.setMobile(mobile);
         record.setContent(templateId.name() + ":" + params.stream().collect(Collectors.joining(",", "[", "]")));
-        record.setStatus(smsResult.getResult());
-        record.setResultCode(smsResult.toString());
+        record.setState(smsResult.getResult());
+        record.setResultCode(smsResult.getResult());
         record.setFee(smsResult.getFee());
         int result = tblSmsLogMapper.insert(record);
         logger.debug("insert sms_log record conut = " + result);
-        logger.debug("sms_log_Id = " + record.getSmsLogId());
+        logger.debug("sms_log_Id = " + record.getId());
         long resultCode = smsResult.getResult();
         return resultCode;
     }
@@ -295,9 +293,10 @@ public class CommonService {
     }
 
     public int doCheckForVerificationCode(Integer type, String username, String lang, BaseRes res) {
-        TblUserMainExample umExample = new TblUserMainExample();
-        umExample.createCriteria().andUsernameEqualTo(username);
-        List<TblUserMain> result = tblUserMainMapper.selectByExample(umExample);
+//        TblUserMainExample umExample = new TblUserMainExample();
+//        umExample.createCriteria().andUsernameEqualTo(username);
+//        List<TblUserMain> result = tblUserMainMapper.selectByExample(umExample);
+        List result = new ArrayList();
         if (type == null) {
             res.setCode(101);
             res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
@@ -327,41 +326,7 @@ public class CommonService {
 
 
 
-    public void submitUserInteractionEs(TblUserInteraction record) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
-        headers.setContentType(type);
-        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
-        GsonBuilder gb = new GsonBuilder();
-        Gson gson = gb.create();
-        List<TblUserInteraction> list = new ArrayList<TblUserInteraction>();
-        list.add(record);
-        String json = gson.toJson(list);
-        HttpEntity<String> formEntity = new HttpEntity<String>(json, headers);
 
-        String obj = restTemplate.postForObject(es_url + "/es/userinteraction/save?json=", formEntity, String.class);
-
-        logger.debug("insert into ES UserInteraction result:" + obj);
-    }
-
-    public void submitCommentEs(TblPost record) {
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
-        headers.setContentType(type);
-        headers.add("Accept", MediaType.APPLICATION_JSON.toString());
-        GsonBuilder gb = new GsonBuilder();
-        Gson gson = gb.create();
-        List<TblPost> list = new ArrayList<TblPost>();
-        list.add(record);
-        String json = gson.toJson(list);
-        HttpEntity<String> formEntity = new HttpEntity<String>(json, headers);
-
-        String obj = restTemplate.postForObject(es_url + "/es/post/save?json=", formEntity, String.class);
-
-        logger.debug("insert into ES UserInteraction result:" + obj);
-    }
 
 
     public RefreshRes refresh(UserPrincipalVO user, RefreshReq req) {
@@ -372,33 +337,18 @@ public class CommonService {
                 userService.reloadRedis(un);
             });
         } else {
-            TblUserMain um = tblUserMainMapper.selectByPrimaryKey(req.getUserId());
-            if (um != null) {
-                userService.reloadRedis(um.getUsername());
-            } else {
-                res.setCode(4108);
-                res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
-            }
+ //           TblUserMain um = tblUserMainMapper.selectByPrimaryKey(req.getUserId());
+//            if (um != null) {
+//                userService.reloadRedis(um.getUsername());
+//            } else {
+//                res.setCode(4108);
+//                res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
+//            }
         }
         res.setCode(0);
         return res;
     }
 
-
-
-
-
-    public TblUserMain getUserMainByUserName(String userName) {
-        TblUserMainExample example = new TblUserMainExample();
-        example.createCriteria().andUsernameEqualTo(userName);
-        List<TblUserMain> result = tblUserMainMapper.selectByExample(example);
-
-        if (result != null && !result.isEmpty()) {
-            return result.get(0);
-        }
-
-        return null;
-    }
 
 
 

@@ -39,7 +39,8 @@ public class RegiAuthenticationToken extends AbstractAuthenticationToken {
 
 	@Override
 	public Object getPrincipal() {
-		return userPrincipal.getBasic().getUsername();
+//		return userPrincipal.getBasic().getUsername();
+		return new Object();
 	}
 
 }

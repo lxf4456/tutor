@@ -6,9 +6,7 @@ import com.education.tutor.api.login.*;
 import com.education.tutor.db.FieldConstants;
 import com.education.tutor.db.domain.*;
 import com.education.tutor.db.mapper.LoginMapper;
-import com.education.tutor.db.mapper.TblCountryCodeMapper;
-import com.education.tutor.db.mapper.TblDataRegionMapper;
-import com.education.tutor.db.mapper.TblUserMainMapper;
+import com.education.tutor.db.mapper.TblRegionMapper;
 import com.education.tutor.util.ImageUtil;
 import com.education.tutor.vo.ImageVO;
 import org.apache.commons.lang3.StringUtils;
@@ -49,9 +47,6 @@ public class LoginService {
     LoginMapper loginMapper;
 
     @Autowired
-    TblUserMainMapper tblUserMainMapper;
-
-    @Autowired
     StringRedisTemplate redisTemplate;
 
     @Autowired
@@ -67,42 +62,24 @@ public class LoginService {
 
 
     @Autowired
-    TblDataRegionMapper tblDataRegionMapper;
-
-    @Value("${im.user.prefix}")
-    String imUserPrefix;
-
-    @Autowired
-    TblCountryCodeMapper tblCountryCodeMapper;
+    TblRegionMapper tblDataRegionMapper;
 
     @PostConstruct
     public void init() {
     }
 
-    /**
-     * 将IM服务返回的token,更新入用户数据
-     *
-     * @param userMainId
-     * @param token
-     */
-    public void updatePushToken(TblUserMain um, String token) {
-        um.setPushToken(token);
-        um.setUpdatedAt(new Date());
-        tblUserMainMapper.updateByPrimaryKey(um);
-        userService.reloadRedis(um.getUsername());
-    }
 
     public GlobalAreaListRes getGlobalAreaList(GlobalAreaListReq req) {
         GlobalAreaListRes res = new GlobalAreaListRes();
-        TblDataRegionExample example = new TblDataRegionExample();
-        TblDataRegionExample.Criteria c = example.createCriteria().andLevelEqualTo(req.getType());
+        TblRegionExample example = new TblRegionExample();
+        TblRegionExample.Criteria c = example.createCriteria().andLevelEqualTo(req.getType());
         if (req.getId() != null) {
             c.andPidEqualTo(req.getId());
         }
-        List<TblDataRegion> records = tblDataRegionMapper.selectByExample(example);
+        List<TblRegion> records = tblDataRegionMapper.selectByExample(example);
         //省份按字母排序
         records.sort((a1, a2) -> (a1.getNameEn().compareTo(a2.getNameEn())));
-        for (TblDataRegion d : records) {
+        for (TblRegion d : records) {
             Area e = new Area();
             e.setId(d.getId());
             if (req.getLang() == null || "en".equalsIgnoreCase(req.getLang())) {
@@ -115,23 +92,6 @@ public class LoginService {
         return res;
     }
 
-    public PhoneCodeListRes getPhoneCodeList(PhoneCodeListReq req) {
-        PhoneCodeListRes res = new PhoneCodeListRes();
-        List<TblCountryCode> records = tblCountryCodeMapper.selectByExample(null);
-        //邀请人国家按字母排序
-        records.sort((a1, a2) -> (a1.getCountryEn().compareTo(a2.getCountryEn())));
-        for (TblCountryCode r : records) {
-            PhoneCode e = new PhoneCode();
-            e.setCountryCode(r.getCountryCode());
-            if (req.getLang() == null || "en".equalsIgnoreCase(req.getLang())) {
-                e.setCountryName(r.getCountryEn());
-            } else {
-                e.setCountryName(r.getCountryCn());
-            }
-            res.getPhoneCodeList().add(e);
-        }
-        return res;
-    }
 
     public boolean usernameExists(String username) {
         if (loginMapper.getUserName(username) != null) {
@@ -222,29 +182,29 @@ public class LoginService {
         if (req.getVerifyCode().equals(passport)) {
             res.setUserFromBoss(true);
         }
-        TblUserMain record = new TblUserMain();
-        record.setEnabled((short) FieldConstants.USER_MAIN_STATUS.ENABLED.ordinal());
-        record.setCountryCode(req.getCountryCode());
-        record.setEmail(email);
-        record.setMobile(mobile);
-        if (username == null) {
-            username = email;
-        }
-        record.setUsername(username);
-        record.setUserLang((short) FieldConstants.USER_MAIN_LANG.valueOf(req.getLang()).ordinal());
-
-        record.setPassword(req.getPassword());
-        record.setUpdatedBy(req.getUserName());
-        record.setCreatedAt(new Date());
-        record.setReceivedReword(0);
-
-        int result = tblUserMainMapper.insert(record);
-
-
-
-        logger.debug("insert usermain return result: " + result);
-        logger.debug("insert usermain return user_main_id: " + record.getUserMainId());
-
+//        TblUserMain record = new TblUserMain();
+//        record.setEnabled((short) FieldConstants.USER_MAIN_STATUS.ENABLED.ordinal());
+//        record.setCountryCode(req.getCountryCode());
+//        record.setEmail(email);
+//        record.setMobile(mobile);
+//        if (username == null) {
+//            username = email;
+//        }
+//        record.setUsername(username);
+//        record.setUserLang((short) FieldConstants.USER_MAIN_LANG.valueOf(req.getLang()).ordinal());
+//
+//        record.setPassword(req.getPassword());
+//        record.setUpdatedBy(req.getUserName());
+//        record.setCreatedAt(new Date());
+//        record.setReceivedReword(0);
+//
+//        int result = tblUserMainMapper.insert(record);
+//
+//
+//
+//        logger.debug("insert usermain return result: " + result);
+//        logger.debug("insert usermain return user_main_id: " + record.getUserMainId());
+//
 
         res.setCode(0);
         return res;
@@ -268,19 +228,19 @@ public class LoginService {
             res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
             return res;
         }
-        TblUserMainExample umExample = new TblUserMainExample();
-        umExample.createCriteria().andUsernameEqualTo(username);
-        List<TblUserMain> result = tblUserMainMapper.selectByExample(umExample);
-        if (result.isEmpty()) {
-            res.setCode(4105);
-            res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
-            return res;
-        }
-        TblUserMain um = result.get(0);
-        um.setPassword(req.getPassword());
-        um.setUpdatedBy(req.getUserName());
-        um.setUpdatedAt(new Date());
-        tblUserMainMapper.updateByPrimaryKey(um);
+//        TblUserMainExample umExample = new TblUserMainExample();
+//        umExample.createCriteria().andUsernameEqualTo(username);
+//        List<TblUserMain> result = tblUserMainMapper.selectByExample(umExample);
+//        if (result.isEmpty()) {
+//            res.setCode(4105);
+//            res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
+//            return res;
+//        }
+//        TblUserMain um = result.get(0);
+//        um.setPassword(req.getPassword());
+//        um.setUpdatedBy(req.getUserName());
+//        um.setUpdatedAt(new Date());
+//        tblUserMainMapper.updateByPrimaryKey(um);
         return res;
     }
 }
