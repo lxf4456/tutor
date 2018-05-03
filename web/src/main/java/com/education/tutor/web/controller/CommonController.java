@@ -4,7 +4,6 @@ import com.education.tutor.api.Attachment;
 import com.education.tutor.api.common.*;
 import com.education.tutor.service.CommonService;
 import com.education.tutor.service.EmailService;
-import com.education.tutor.service.FastDfsClientService;
 import com.education.tutor.service.I18nService;
 import com.education.tutor.vo.UserPrincipalVO;
 import com.education.tutor.web.security.RegiAuthenticationToken;
@@ -35,9 +34,6 @@ public class CommonController extends AuthenticatedController {
 	private final Log logger = LogFactory.getLog(this.getClass());
 
 	@Autowired
-	FastDfsClientService fastDfsClientService;
-
-	@Autowired
 	CommonService commonService;
 
 	@Autowired
@@ -59,7 +55,7 @@ public class CommonController extends AuthenticatedController {
 		byte[] content = null;
 		HttpHeaders headers = new HttpHeaders();
 		try {
-			content = fastDfsClientService.download(groupName, remoteFileName);
+//			content = fastDfsClientService.download(groupName, remoteFileName);
 			headers.setContentDispositionFormData("attachment",
 					new String(specFileName.getBytes("UTF-8"), "iso-8859-1"));
 			headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -94,8 +90,7 @@ public class CommonController extends AuthenticatedController {
 				String ext = FilenameUtils.getExtension(file.getOriginalFilename());
 				// fastdfs setup finished uncomment below, replace local file
 				logger.info(" before save " + file.getOriginalFilename() + " size " + content.length);
-				String relativePath = fastDfsClientService.upload(content, file.getOriginalFilename(), ext,
-						content.length, null);
+				String relativePath = "";//fastDfsClientService.upload(content, file.getOriginalFilename(), ext,content.length, null);
 				// String relativePath = UUID.randomUUID().toString() + "_" +
 				// file.getOriginalFilename();
 				// Files.write(content, new File("/var/" + relativePath));

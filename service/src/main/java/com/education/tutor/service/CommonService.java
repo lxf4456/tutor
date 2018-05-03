@@ -79,9 +79,6 @@ public class CommonService {
     @Value("${user-feedback.processor}")
     String userFeedBackProcessor;
 
-    @Value("${es.url}")
-    String es_url;
-
     @Value("${test.user}")
     String testUserId;
 
@@ -99,11 +96,6 @@ public class CommonService {
         logger.info("test.user=" + testUserId);
     }
 
-    @Value("${invite.text.title}")
-    String inviteTextTitle;
-
-    @Value("${invite.text.desc}")
-    String inviteTextDesc;
 
 
 

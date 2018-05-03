@@ -3,7 +3,6 @@ package com.education.tutor.web.security;
 import com.education.tutor.Application;
 import com.education.tutor.api.ErrorRes;
 import com.education.tutor.config.KeyDef;
-import com.education.tutor.db.FieldConstants;
 import com.education.tutor.service.I18nService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.input.TeeInputStream;
@@ -11,11 +10,7 @@ import org.apache.commons.io.output.TeeOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.*;
@@ -42,26 +37,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
 	ObjectMapper om = new ObjectMapper();
 
-	@Autowired
-	KafkaTemplate<String, String> kafkaTemplate;
-
-	@Value("${spring.kafka.event.logger.topic}")
-	String topic;
 
 	public void sendMessage(String message) {
-		ListenableFuture<SendResult<String, String>> result = kafkaTemplate.send(topic, message);
-		result.addCallback(sendResult -> {
-			// logger.debug("send Result ProducerRecord " +
-			// sendResult.getProducerRecord().toString());
-			// logger.debug("send Result RecordMetadata " +
-			// sendResult.getRecordMetadata().topic() + ":"
-			// + sendResult.getRecordMetadata().timestamp() + ":" +
-			// sendResult.getRecordMetadata().checksum());
-			logger.debug("kafka send succ");
-		}, exception -> {
-			exception.printStackTrace();
-			logger.error("kafka send fail\n" + exception.getMessage());
-		});
 	}
 
 	public void handleErrorRes(int errorCode, String lang, HttpServletResponse response)

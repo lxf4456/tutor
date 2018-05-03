@@ -73,8 +73,6 @@ public class LoginController extends AuthenticatedController{
 
 	ObjectMapper om = new ObjectMapper();
 
-	@Value("${im.user.prefix}")
-	String imUserPrefix;
 
 	@Value("${redis-user-logintoken.duration.seconds}")
 	private long duration = 3600 * 72;

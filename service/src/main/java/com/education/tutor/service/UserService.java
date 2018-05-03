@@ -50,8 +50,6 @@ public class UserService {
     @Autowired
     StringRedisTemplate redisTemplate;
 
-    @Value("${im.user.prefix}")
-    String imUserPrefix;
 
     @Value("${redis-user-logintoken.duration.seconds}")
     private long duration = 3600 * 72;
@@ -62,12 +60,6 @@ public class UserService {
 
     public final static String USERPRINCIPAL_KEY_PREFIX = "UP:USERPRINCIPAL_";
 
-    public final static String TOPIC_LABEL_MAIN_ORDER_BY = "LABEL_MAIN:LABEL_MAIN_ORDER";
-
-    private String USERSIGNISOK = "SIGN:USERSIGNISOK_";//当日是否签到
-
-    @Value("${gold.partner.num}")
-    String goldPartnerNum;
 
     @PostConstruct
     public void init() {
