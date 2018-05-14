@@ -1,6 +1,6 @@
 package com.education.tutor.web.security;
 
-import com.education.tutor.Application;
+import com.education.Application;
 import com.education.tutor.api.BaseRes;
 import com.education.tutor.service.I18nService;
 import com.fasterxml.jackson.databind.ObjectMapper;

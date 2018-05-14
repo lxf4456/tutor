@@ -13,10 +13,12 @@ public class RefreshReq extends BaseReq {
 	
 	Long roleId;
 
+	@Override
 	public Long getUserId() {
 		return userId;
 	}
 
+	@Override
 	public void setUserId(Long userId) {
 		this.userId = userId;
 	}

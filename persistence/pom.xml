@@ -29,11 +29,6 @@
 			<version>${mybatis-spring-boot.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.education</groupId>
-			<artifactId>tutor-api</artifactId>
-			<version>${parent.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>${druid.version}</version>
@@ -42,6 +37,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${mysql.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.education</groupId>
+			<artifactId>tutor-api</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

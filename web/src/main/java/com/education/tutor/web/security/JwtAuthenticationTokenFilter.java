@@ -1,6 +1,6 @@
 package com.education.tutor.web.security;
 
-import com.education.tutor.Application;
+import com.education.Application;
 import com.education.tutor.api.ErrorRes;
 import com.education.tutor.config.KeyDef;
 import com.education.tutor.service.I18nService;

@@ -1,7 +1,5 @@
 package com.education.tutor.web.security;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +14,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
@@ -74,8 +74,9 @@ public class StrictWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// .anyRequest().authenticated()
 				// .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				// allow anonymous resource requests
-				.antMatchers(HttpMethod.POST, "/guest/**").permitAll().antMatchers(HttpMethod.POST, "/login/**")
-				.permitAll().antMatchers(HttpMethod.POST, "/transit/**").permitAll().anyRequest().authenticated();
+				.antMatchers(HttpMethod.POST, "/guest/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/login/**").permitAll().
+				antMatchers(HttpMethod.POST, "/live/**").permitAll().anyRequest().authenticated();
 		// disable page caching
 		httpSecurity.headers().cacheControl().disable();
 

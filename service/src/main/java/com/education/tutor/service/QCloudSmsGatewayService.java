@@ -118,17 +118,17 @@ public class QCloudSmsGatewayService extends DummySmsGatewayService {
 		return "QCloud";
 	}
 
-	@Scheduled(cron = "0/20 * * * * ?")
-	public void pingQCloud() {
-		try {
-			SmsStatusPullCallbackResult callback_result = pullstatus.pullCallback(10);
-//			logger.info("callback_result: " + callback_result);
-//			SmsStatusPullReplyResult reply_result = pullstatus.pullReply(10);
-//			logger.info("reply_result: " + reply_result);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	@Scheduled(cron = "0/20 * * * * ?")
+//	public void pingQCloud() {
+//		try {
+//			SmsStatusPullCallbackResult callback_result = pullstatus.pullCallback(10);
+////			logger.info("callback_result: " + callback_result);
+////			SmsStatusPullReplyResult reply_result = pullstatus.pullReply(10);
+////			logger.info("reply_result: " + reply_result);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 
 	/**
 	 * 指定模板单发

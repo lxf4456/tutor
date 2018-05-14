@@ -7,6 +7,12 @@ public class BaseReq extends Base {
      */
     private static final long serialVersionUID = 1L;
 
+    private Long userId;
+
+    private int userType;
+
+
+
     String lang = "en";
 
     public String getLang() {
@@ -17,4 +23,19 @@ public class BaseReq extends Base {
     	this.lang = lang;
     }
 
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 }

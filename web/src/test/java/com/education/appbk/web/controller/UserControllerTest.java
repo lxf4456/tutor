@@ -1,7 +1,7 @@
 package com.education.appbk.web.controller;
 
 
-import com.education.tutor.Application;
+import com.education.Application;
 import com.education.tutor.api.user.MyInfoReq;
 import com.education.tutor.api.user.MyInfoRes;
 import com.education.tutor.api.user.SetMyLanguageReq;

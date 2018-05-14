@@ -81,7 +81,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/v2/api-docs").permitAll()
 				.antMatchers(HttpMethod.POST, "/guest/**").permitAll()
 				.antMatchers(HttpMethod.POST, "/login/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/transit/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/live/**").permitAll()
 				.anyRequest().authenticated();
 		// disable page caching
 		httpSecurity.headers().cacheControl().disable();

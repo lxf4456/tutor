@@ -1,6 +1,6 @@
 package com.education.tutor.web.controller;
 
-import com.education.tutor.Application;
+import com.education.Application;
 import com.education.tutor.api.login.*;
 import com.education.tutor.service.CommonService;
 import com.education.tutor.service.I18nService;

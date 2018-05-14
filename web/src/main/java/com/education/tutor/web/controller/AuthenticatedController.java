@@ -1,7 +1,7 @@
 package com.education.tutor.web.controller;
 
 
-import com.education.tutor.Application;
+import com.education.Application;
 import com.education.tutor.api.BaseReq;
 import com.education.tutor.api.BaseRes;
 import com.education.tutor.db.FieldConstants;

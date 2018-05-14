@@ -1,6 +1,6 @@
 package com.education.appbk.web.controller;
 
-import com.education.tutor.Application;
+import com.education.Application;
 import com.education.tutor.api.login.LoginReq;
 import com.education.tutor.api.login.LoginRes;
 import com.education.tutor.web.security.JwtTokenUtil;
