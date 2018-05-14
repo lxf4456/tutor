@@ -1,10 +1,13 @@
 package com.education.duobei.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 /**
  * Created by 雪峰 on 2018/5/8.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Course implements Serializable{
     private  String roomId;
     private  String         title;

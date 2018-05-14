@@ -1,10 +1,13 @@
 package com.education.duobei.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.io.Serializable;
 
 /**
  * Created by 雪峰 on 2018/5/8.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Room implements Serializable {
 
         private String roomId;
@@ -14,6 +17,8 @@ public class Room implements Serializable {
         private  String validEndTime;
         private  boolean video;
         private  String hostCode;
+        private String coverImgUrl;
+
 
         public String getRoomId() {
             return roomId;
@@ -71,4 +76,11 @@ public class Room implements Serializable {
             this.hostCode = hostCode;
         }
 
+    public String getCoverImgUrl() {
+        return coverImgUrl;
+    }
+
+    public void setCoverImgUrl(String coverImgUrl) {
+        this.coverImgUrl = coverImgUrl;
+    }
 }

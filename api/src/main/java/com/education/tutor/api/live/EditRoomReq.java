@@ -2,8 +2,6 @@ package com.education.tutor.api.live;
 
 import com.education.tutor.api.BaseReq;
 
-import java.util.Date;
-
 /**
  * Created by 雪峰 on 2018/5/8.
  */
@@ -13,7 +11,7 @@ public class EditRoomReq extends BaseReq {
 
     private String title;
 
-    private Date startTime;
+    private String startTime;
     //
     private int langth;
 
@@ -34,11 +32,11 @@ public class EditRoomReq extends BaseReq {
         this.title = title;
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 

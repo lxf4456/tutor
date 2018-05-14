@@ -52,7 +52,7 @@ public class LiveController extends AuthenticatedController{
      *
      * 房间关联讲义
      * */
-    @RequestMapping(method = RequestMethod.POST, path = "/uploadDocument", produces = "application/json;charset=utf8")
+    @RequestMapping(method = RequestMethod.POST, path = "/attatchDocument", produces = "application/json;charset=utf8")
     @ResponseBody
     public AttatchDocumentRes attatchDocument(@RequestBody AttatchDocumentReq req) {
         AttatchDocumentRes res = liveService.attatchDocument(req);
