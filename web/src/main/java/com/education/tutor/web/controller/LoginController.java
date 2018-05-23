@@ -13,7 +13,6 @@ import com.education.tutor.web.security.RegiAuthenticationToken;
 import com.education.tutor.web.sso.SsoClientDeprecated;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -196,7 +194,7 @@ public class LoginController extends AuthenticatedController{
 
 	@RequestMapping(method = RequestMethod.POST, path = "/sendVerifyCode", produces = "application/json;charset=utf8")
 	@ResponseBody
-	public SendVerifyCodeRes sendVerifyCode(@RequestBody SendVerifyCodeReq req, Device device) {
+	public SendVerifyCodeRes sendVerifyCode(@RequestBody SendVerifyCodeReq  req) {
 		/*
 		 * SendSmsRes res = commonService.sendSmsVerificationCode(req.getLang(),
 		 * req.getUuid(), req.getCaptcha(), req.getUserName(), req.getType());
@@ -214,19 +212,19 @@ public class LoginController extends AuthenticatedController{
 		}
 
 		SendVerifyCodeRes res = new SendVerifyCodeRes();
-
-		String tempData = redisTemplate.opsForValue().get(SENDVALITECODETEMP + req.getUserName());
-		if (StringUtils.isNotEmpty(tempData)) {
-			// 发送太频繁
-			res.setCode(1110);
-			res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
-			return res;
-		}
+//
+//		String tempData = redisTemplate.opsForValue().get(SENDVALITECODETEMP + req.getUserName());
+//		if (StringUtils.isNotEmpty(tempData)) {
+//			// 发送太频繁
+//			res.setCode(1110);
+//			res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
+//			return res;
+//		}
 
 		switch (req.getRegisterType()) {
 		case 1:
 			res = commonService.sendSmsVerificationCode(req.getLang(), req.getUserName(), req.getCountryCode(),
-					req.getType());
+					req.getType(),"");
 			break;
 		case 2:
 			res = commonService.sendEmailVerificationCode(req.getLang(), req.getUserName().toLowerCase(), req.getType());
@@ -239,10 +237,10 @@ public class LoginController extends AuthenticatedController{
 			res.setCode(0);
 		}
 
-		if (res.getCode() == 0) {
-			redisTemplate.opsForValue().set(SENDVALITECODETEMP + req.getUserName(),
-					String.valueOf(Calendar.getInstance().getTime()), 10, TimeUnit.SECONDS);
-		}
+//		if (res.getCode() == 0) {
+//			redisTemplate.opsForValue().set(SENDVALITECODETEMP + req.getUserName(),
+//					String.valueOf(Calendar.getInstance().getTime()), 10, TimeUnit.SECONDS);
+//		}
 		logger.info("sendVerifyCode res :"+res.getCode()+" "+res.getMessage());
 		return res;
 	}

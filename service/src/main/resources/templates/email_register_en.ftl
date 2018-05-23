@@ -48,7 +48,7 @@
 <body>
 <div class="wrap">
     <div class="top">
-        <p>Thanks for registration(reset password) your OilUP account</p>
+        <p>Thanks for registration(reset password) your USTUTOR account</p>
     </div>
     <div class="medium">
         <p>Please input verification code</p>

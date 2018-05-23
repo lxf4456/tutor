@@ -34,11 +34,6 @@ public class EmailService {
 	String smtpPassword;
 
 
-	@Value("${smtp.equipment.username}")
-	String smtpEquipmentUsername;
-
-	@Value("${smtp.equipment.password}")
-	String smtpEquipmentPassword;
 
 	@Autowired
 	Configuration configuration;
@@ -66,15 +61,8 @@ public class EmailService {
 			email.setHostName(smtpHost);
 			email.setSmtpPort(Integer.parseInt(smtpPort));
 			email.setSSLOnConnect(true);
-			if("equipment".equals(templateName)){
-				email.setAuthentication(smtpEquipmentUsername, smtpEquipmentPassword);
-				email.setFrom(smtpEquipmentUsername);
-			}else{
-
-				email.setAuthentication(smtpUsername, smtpPassword);
-				email.setFrom(smtpUsername);
-			}
-
+			email.setAuthentication(smtpUsername, smtpPassword);
+			email.setFrom(smtpUsername);
 			email.setSubject(title);
 			String body = getTemplate(lang, templateName, params);
 			email.setHtmlMsg(body);

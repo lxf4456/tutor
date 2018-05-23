@@ -20,6 +20,8 @@ public class SendVerifyCodeReq extends BaseReq {
 	Integer registerType; //验证码类型， 1：手机号注册 2：邮箱注册
 
 	String countryCode; // 国家电话代码
+
+	private String code;
 	
 	public String getCountryCode() {
 		return countryCode;
@@ -71,4 +73,11 @@ public class SendVerifyCodeReq extends BaseReq {
 	}
 
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }

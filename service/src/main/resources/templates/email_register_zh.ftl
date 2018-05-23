@@ -48,7 +48,7 @@
 <body>
 <div class="wrap">
     <div class="top">
-        <p>感谢您 注册/重置 OilUP账号。</p>
+        <p>感谢您 注册/重置 美师在线 账号。</p>
     </div>
     <div class="medium">
         <p>请输入下面的验证码，完成注册/重置。</p>
@@ -58,7 +58,7 @@
     <div class="footer">
         <p>温馨提示：</p>
         <p>本邮件为系统自动发出，请勿回复。</p>
-        <p>感谢您使用OilUP服务！</p>
+        <p>感谢您使用美师在线服务！</p>
     </div>
 </div>
 </body>

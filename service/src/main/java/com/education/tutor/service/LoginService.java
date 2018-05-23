@@ -50,7 +50,7 @@ public class LoginService {
     StringRedisTemplate redisTemplate;
 
     @Autowired
-    ISmsGateway smsGateway;
+    SMSService smsService;
 
     @Autowired
     I18nService i18nService;

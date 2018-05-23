@@ -3,6 +3,8 @@ package com.education.appbk.web.controller;
 import com.education.Application;
 import com.education.tutor.api.login.LoginReq;
 import com.education.tutor.api.login.LoginRes;
+import com.education.tutor.api.login.SendVerifyCodeReq;
+import com.education.tutor.api.login.SendVerifyCodeRes;
 import com.education.tutor.web.security.JwtTokenUtil;
 import com.education.tutor.web.sso.SsoClientDeprecated;
 import org.apache.commons.logging.Log;
@@ -63,4 +65,20 @@ public class LoginControllerTest {
 		logger.info(res.getMessage());
 	}
 
+
+	@Test
+	public void sendVerifyCode() {
+		SendVerifyCodeReq req = new SendVerifyCodeReq();
+		//req.setUserName("6264299298");
+		req.setUserName("lxf4456@163.com");
+		req.setRegisterType(1);
+		req.setLang("en");
+		req.setCountryCode("1");
+		req.setCode("1234");
+		req.setCaptcha("2133");
+		req.setRegisterType(2);
+		req.setType(1);
+		SendVerifyCodeRes res = testRestTemplate.postForObject("/login/sendVerifyCode", req, SendVerifyCodeRes.class);
+		logger.info(res.getMessage());
+	}
 }

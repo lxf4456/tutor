@@ -3,37 +3,32 @@ package com.education.tutor.service;
 import com.education.tutor.api.BaseRes;
 import com.education.tutor.api.common.RefreshReq;
 import com.education.tutor.api.common.RefreshRes;
+import com.education.tutor.api.login.SendVerifyCodeReq;
 import com.education.tutor.api.login.SendVerifyCodeRes;
 import com.education.tutor.db.FieldConstants;
-import com.education.tutor.db.domain.*;
-import com.education.tutor.db.mapper.*;
-import com.education.tutor.vo.SmsSendResult;
+import com.education.tutor.db.domain.TblAttachment;
+import com.education.tutor.db.mapper.CommonMapper;
+import com.education.tutor.db.mapper.TblAttachmentMapper;
+import com.education.tutor.db.mapper.TblSmsLogMapper;
+import com.education.tutor.db.mapper.UserMapper;
 import com.education.tutor.vo.UserPrincipalVO;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -45,7 +40,7 @@ public class CommonService {
     I18nService i18nService;
 
     @Autowired
-    ISmsGateway smsGateway;
+    SMSService smsService;
 
     @Autowired
     EmailService emailService;
@@ -130,57 +125,27 @@ public class CommonService {
         return record.getId() + ":" + record.getUrlPath();
     }
 
-    /**
-     * 调用第三方网关发送短信
-     *
-     * @param mobile
-     * @param content
-     * @return 成功返回0, 錯誤返回錯誤碼
-     */
-    public long sendSms(String lang, String countryCode, String mobile, ISmsGateway.SMSTEMPLATE templateId,
-                        List<String> params) {
-        SmsSendResult smsResult = smsGateway.sendWithParam(lang, countryCode, mobile, templateId, params, "", "", "");
-        logger.info("send sms to " + mobile + " result is " + smsResult);
-        // 保存短信发送记录到sms_log
-        TblSmsLog record = new TblSmsLog();
-        record.setSmsChannel(smsGateway.getChannelName());
-        record.setCountryCode(countryCode);
-        record.setMobile(mobile);
-        record.setContent(templateId.name() + ":" + params.stream().collect(Collectors.joining(",", "[", "]")));
-        record.setState(smsResult.getResult());
-        record.setResultCode(smsResult.getResult());
-        record.setFee(smsResult.getFee());
-        int result = tblSmsLogMapper.insert(record);
-        logger.debug("insert sms_log record conut = " + result);
-        logger.debug("sms_log_Id = " + record.getId());
-        long resultCode = smsResult.getResult();
-        return resultCode;
-    }
+
 
     /**
      * 发送短信验证码
      *
-     * @param uuid
-     * @param captchaInput
-     * @param mobile
-     * @param type
      * @return
      */
-    public SendVerifyCodeRes sendSmsVerificationCode(String lang, String uuid, String captchaInput, String mobile,
-                                                     String countryCode, Integer type) {
+    public SendVerifyCodeRes sendSmsVerificationCode(SendVerifyCodeReq req) {
         SendVerifyCodeRes res = new SendVerifyCodeRes();
-        if (doCheckForVerificationCode(type, countryCode + "-" + mobile, lang, res) > 0) {
+        if (doCheckForVerificationCode(req.getType(), req.getCountryCode() + "-" + req.getUserName(), req.getLang(), res) > 0) {
             return res;
         }
         // 校验图片验证码
-        String captchaGenerated = redisTemplate.opsForValue().get(LoginService.CAPTCHA_KEY_PREFIX + uuid);
+        String captchaGenerated = redisTemplate.opsForValue().get(LoginService.CAPTCHA_KEY_PREFIX + req.getUuid());
         // username 在数据表中的存储规范为countryCode + "-" + mobile
-        if (captchaGenerated != null && captchaInput.equalsIgnoreCase(captchaGenerated)) {
-            sendSmsCommon(lang, mobile, countryCode, type, res);
+        if (captchaGenerated != null && req.getCaptcha().equalsIgnoreCase(captchaGenerated)) {
+            res = smsService.verifyCode(req);
         } else {
             // 图片验证码输入错误
             res.setCode(1108);
-            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
+            res.setMessage(i18nService.getMessage("" + res.getCode(), req.getLang()));
         }
         if (res.getCode() == -1) {
             res.setCode(0);
@@ -212,8 +177,8 @@ public class CommonService {
         // 生成验证码并存入
         String emailCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
         logger.debug("_________________________emailCode:" + emailCode);
-        redisTemplate.opsForValue().set(redisKeyEmail, emailCode, Integer.parseInt(emailVerifyCodeDurationMinutes),
-                TimeUnit.MINUTES);
+//        redisTemplate.opsForValue().set(redisKeyEmail, emailCode, Integer.parseInt(emailVerifyCodeDurationMinutes),
+//                TimeUnit.MINUTES);
         int code = type == 1 ? 101 : 102;
 
 
@@ -235,50 +200,47 @@ public class CommonService {
     /**
      * 发送短信验证码
      *
-     * @param uuid
-     * @param captchaInput
+     * @param
+     * @param
      * @param mobile
      * @param type
      * @return
      */
-    public SendVerifyCodeRes sendSmsVerificationCode(String lang, String mobile, String countryCode, Integer type) {
+    public SendVerifyCodeRes sendSmsVerificationCode(String lang, String mobile, String countryCode, Integer type,String code) {
         SendVerifyCodeRes res = new SendVerifyCodeRes();
         logger.info("this countryCode vla " + countryCode + " moblie: " + mobile + " type: " + type);
         if (doCheckForVerificationCode(type, countryCode + "-" + mobile, lang, res) > 0) {
             return res;
         }
-        sendSmsCommon(lang, mobile, countryCode, type, res);
+        sendSmsCommon(lang, mobile, countryCode, type,code, res);
         return res;
     }
 
-    public void sendSmsCommon(String lang, String mobile, String countryCode, Integer type, SendVerifyCodeRes res) {
+    public void sendSmsCommon(String lang, String mobile, String countryCode, Integer type,String smsCode, SendVerifyCodeRes res) {
         // username 在数据表中的存储规范为countryCode + "-" + mobile
         String redisKeySms = SMSVERIFYCODE + countryCode + "-" + mobile;
         // 生成短信验证码并存入
-        String smsCode = redisTemplate.opsForValue().get(redisKeySms);
-        if (smsCode == null || StringUtils.isEmpty(smsCode)) {
+       // String smsCode = redisTemplate.opsForValue().get(redisKeySms);
+//        if (smsCode == null || StringUtils.isEmpty(smsCode)) {
             smsCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
-            redisTemplate.opsForValue().set(redisKeySms, smsCode, Integer.parseInt(smsVerifyCodeDurationMinutes),
-                    TimeUnit.MINUTES);
-        }
+//            redisTemplate.opsForValue().set(redisKeySms, smsCode, Integer.parseInt(smsVerifyCodeDurationMinutes),
+//                    TimeUnit.MINUTES);
+//        }
+
+        SendVerifyCodeReq req = new SendVerifyCodeReq();
+
+        req.setCountryCode(countryCode);
+        req.setType(type);
+        req.setUserName(mobile);
+        req.setCode(smsCode);
+        req.setLang(lang);
+        SendVerifyCodeRes sendVerifyCodeRes =  smsService.verifyCode(req);
 
 
-        ISmsGateway.SMSTEMPLATE templateId = ISmsGateway.SMSTEMPLATE.REGISTER;
-        if (type == 2) {
-            templateId = ISmsGateway.SMSTEMPLATE.RESETPASSWORD;
-        }
-        long smsResult = sendSms(lang, countryCode, mobile, templateId,
-                Arrays.asList(smsCode, "" + smsVerifyCodeDurationMinutes));
-        if (smsResult != 0) {
+        if (sendVerifyCodeRes.getCode() != 0) {
             // 短信发送错误
-            if (smsResult == 1025) {
-                // 发送太频繁
-                res.setCode(1110);
-                res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
-            } else {
-                res.setCode(1107);
-                res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
-            }
+            res.setCode(1107);
+            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
         } else {
             logger.debug("Successfully send sms verify code " + "(type=" + type + ") to " + mobile);
         }
@@ -288,29 +250,29 @@ public class CommonService {
 //        TblUserMainExample umExample = new TblUserMainExample();
 //        umExample.createCriteria().andUsernameEqualTo(username);
 //        List<TblUserMain> result = tblUserMainMapper.selectByExample(umExample);
-        List result = new ArrayList();
-        if (type == null) {
-            res.setCode(101);
-            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
-            return res.getCode();
-        }
-        if (type != 1 && type != 2) {
-            res.setCode(101);
-            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
-            return res.getCode();
-        }
-        if (type == 1 && !result.isEmpty()) {
-            // 注册时调用，如果用户号已存在，报错
-            res.setCode(4101);
-            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
-            return res.getCode();
-        }
-        if (type == 2 && result.isEmpty()) {
-            // 重置密码时调用，如果用户号不存在，报错
-            res.setCode(4105);
-            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
-            return res.getCode();
-        }
+//        List result = new ArrayList();
+//        if (type == null) {
+//            res.setCode(101);
+//            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
+//            return res.getCode();
+//        }
+//        if (type != 1 && type != 2) {
+//            res.setCode(101);
+//            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
+//            return res.getCode();
+//        }
+//        if (type == 1 && !result.isEmpty()) {
+//            // 注册时调用，如果用户号已存在，报错
+//            res.setCode(4101);
+//            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
+//            return res.getCode();
+//        }
+//        if (type == 2 && result.isEmpty()) {
+//            // 重置密码时调用，如果用户号不存在，报错
+//            res.setCode(4105);
+//            res.setMessage(i18nService.getMessage("" + res.getCode(), lang));
+//            return res.getCode();
+//        }
         res.setCode(0);
         return res.getCode();
     }
