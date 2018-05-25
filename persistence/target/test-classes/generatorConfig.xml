@@ -12,7 +12,7 @@
 
 		<!--数据库链接URL，用户名、密码 -->
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://rm-bp12j8jed3n637x6p.mysql.rds.aliyuncs.com:3306/tutor?useSSL=false" userId="tutor" password="skEHo3c!X154FDfu">
+			connectionURL="jdbc:mysql://rm-2ze6kzf5ig80613f7vo.mysql.rds.aliyuncs.com:3306/ustutor?useSSL=false" userId="ustutor" password="Us_Tutor">
 		</jdbcConnection>
 
 		<!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制 -->
@@ -475,6 +475,110 @@
 
 
 
+		<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+		<table tableName="alembic_version" domainObjectName="TblAlembicVersion"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
+
+
+
+		<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+		<table tableName="course_class_participant" domainObjectName="TblCourseClassParticipant"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
+
+
+		<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+		<table tableName="course_classroom" domainObjectName="TblCourseClassroom"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
+
+		<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+		<table tableName="curriculum" domainObjectName="TblCurriculum"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
+		<!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+		<table tableName="role_auth" domainObjectName="TblRoleAuth"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
+
+		<table tableName="role_definition" domainObjectName="TblRoleDefinition"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
+
+		<table tableName="sys_user_role" domainObjectName="TblSysUserRole"
+			   enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true"
+			   selectByExampleQueryId="true">
+			<!-- optional.插入时,是否生成selectKey元素 -->
+			<generatedKey column="id" sqlStatement="SELECT LAST_INSERT_ID()"
+						  identity="true" type="post" />
+			<!-- optional.忽略某一列 -->
+			<!--<ignoreColumn column="gmt_create" delimitedColumnName="true" /> -->
+			<!--optional.覆盖Model的生成规则,主要是设置javaType -->
+			<!--<columnOverride column="id" javaType="java.lang.Long" jdbcType="INTEGER"
+				typeHandler="" delimitedColumnName="" /> -->
+		</table>
 	</context>
 
 </generatorConfiguration>  
