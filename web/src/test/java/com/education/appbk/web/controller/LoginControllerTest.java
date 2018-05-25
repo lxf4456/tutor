@@ -69,8 +69,8 @@ public class LoginControllerTest {
 	@Test
 	public void sendVerifyCode() {
 		SendVerifyCodeReq req = new SendVerifyCodeReq();
-		//req.setUserName("6264299298");
-		req.setUserName("lxf4456@163.com");
+		req.setUserName("6264299298");
+		//req.setUserName("lxf4456@163.com");
 		req.setRegisterType(1);
 		req.setLang("en");
 		req.setCountryCode("1");
