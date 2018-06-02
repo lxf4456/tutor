@@ -7,6 +7,10 @@ import com.education.tutor.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by 雪峰 on 2018/5/9.
  */
@@ -83,6 +87,82 @@ public class LiveService {
 
         res.setCode(0);
         return res;
+    }
+
+    //上传文件到房间
+    public UploadFileUrlRes uploadFileUrl(UploadFileUrlReq req){
+        UploadFileUrlRes res = new UploadFileUrlRes();
+        try {
+            File file = getFileFromUrl(req.getFileUrl());
+
+            //编辑课程时间
+            com.education.duobei.vo.UploadDocumentRes uploadDocumentRes = duoBeiService.uploadDocument(req.getFilename(), new File(req.getFileUrl()));
+            if (!uploadDocumentRes.isSuccess()) {
+                res.setCode(101);
+                res.setMessage(uploadDocumentRes.getError());
+                return res;
+            }
+
+            res.setUuid(uploadDocumentRes.getUuid());
+
+
+            duoBeiService.attatchDocument(uploadDocumentRes.getUuid(), req.getRoomId());
+            res.setCode(0);
+            deleteFile(file);
+        }catch (Exception e){
+            res.setCode(101);
+            e.printStackTrace();
+        }
+
+
+        return res;
+    }
+
+
+
+    private  File  getFileFromUrl(String urlStr) throws IOException {
+        URL url = new URL(urlStr);
+        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        //设置超时间为3秒
+        conn.setConnectTimeout(3*1000);
+        //防止屏蔽程序抓取而返回403错误
+        conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
+
+        //得到输入流
+        InputStream inputStream = conn.getInputStream();
+        //获取自己数组
+        byte[] getData = readInputStream(inputStream);
+
+        //文件保存位置
+        return new File(System.getProperty("java.io.tmpdir"));
+
+    }
+
+    private void deleteFile(File file) {
+        if (file.exists()) {//判断文件是否存在
+            if (file.isFile()) {//判断是否是文件
+                file.delete();//删除文件
+            } else if (file.isDirectory()) {//否则如果它是一个目录
+                File[] files = file.listFiles();//声明目录下所有的文件 files[];
+                for (int i = 0; i < files.length; i++) {//遍历目录下所有的文件
+                    this.deleteFile(files[i]);//把每个文件用这个方法进行迭代
+                }
+                file.delete();//删除文件夹
+            }
+        } else {
+            System.out.println("所删除的文件不存在");
+        }
+
+    }
+    public static  byte[] readInputStream(InputStream inputStream) throws IOException {
+        byte[] buffer = new byte[1024];
+        int len = 0;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        while((len = inputStream.read(buffer)) != -1) {
+            bos.write(buffer, 0, len);
+        }
+        bos.close();
+        return bos.toByteArray();
     }
 
     //给房间关联讲义

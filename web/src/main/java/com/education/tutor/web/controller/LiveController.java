@@ -48,6 +48,18 @@ public class LiveController extends AuthenticatedController{
         return res;
     }
 
+
+
+    /**
+     *
+     * 房间上传文档2 fileUrl
+     * */
+    @RequestMapping(method = RequestMethod.POST, path = "/uploadFileUrl", produces = "application/json;charset=utf8")
+    @ResponseBody
+    public UploadFileUrlRes uploadDocument(@RequestBody UploadFileUrlReq req) {
+        UploadFileUrlRes res = liveService.uploadFileUrl(req);
+        return res;
+    }
     /**
      *
      * 房间关联讲义
