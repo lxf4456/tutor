@@ -28,7 +28,7 @@ public class LiveControllerTest {
     public void uploadFileUrl() {
         UploadFileUrlReq req = new UploadFileUrlReq();
         req.setFilename("testFile");
-        req.setFileUrl("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1527957989054&di=b8cd5bc332a2df2960eaa38923900ec5&imgtype=0&src=http%3A%2F%2Fimg5.duitang.com%2Fuploads%2Fblog%2F201412%2F04%2F20141204111500_4NVEK.thumb.700_0.png");
+        req.setFileUrl("https://image.oilup.com/group1/M00/00/AB/rBWxWlpi6yGAf1AjAAPGt8FyjJE671.jpg");
         req.setRoomId("1234567890123sdsd");
 
 

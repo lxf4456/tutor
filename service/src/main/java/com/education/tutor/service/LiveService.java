@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by 雪峰 on 2018/5/9.
@@ -19,6 +22,9 @@ public class LiveService {
 
     @Autowired
     DuoBeiService duoBeiService;
+
+    final static Pattern pattern = Pattern.compile("\\S*[?]\\S*");
+
 
     //创建房间
     public CreateRoomRes createRoom(CreateRoomReq req)throws Exception{
@@ -96,7 +102,7 @@ public class LiveService {
             File file = getFileFromUrl(req.getFileUrl());
 
             //编辑课程时间
-            com.education.duobei.vo.UploadDocumentRes uploadDocumentRes = duoBeiService.uploadDocument(req.getFilename(), new File(req.getFileUrl()));
+            com.education.duobei.vo.UploadDocumentRes uploadDocumentRes = duoBeiService.uploadDocument(req.getFilename(), file);
             if (!uploadDocumentRes.isSuccess()) {
                 res.setCode(101);
                 res.setMessage(uploadDocumentRes.getError());
@@ -128,14 +134,43 @@ public class LiveService {
         //防止屏蔽程序抓取而返回403错误
         conn.setRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 5.0; Windows NT; DigExt)");
 
+
+        int filesize = conn.getContentLength();
         //得到输入流
         InputStream inputStream = conn.getInputStream();
         //获取自己数组
-        byte[] getData = readInputStream(inputStream);
+        byte[] getData = readInputStream(inputStream,filesize);
 
-        //文件保存位置
-        return new File(System.getProperty("java.io.tmpdir"));
+        File saveDir = new File("/var/log/temp/");
+        if(!saveDir.exists()){
+            saveDir.mkdir();
+        }
+        File file = new File(saveDir+File.separator+UUID.randomUUID()+"."+parseSuffix(urlStr));
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.write(getData);
+        if(fos!=null){
+            fos.close();
+        }
+        if(inputStream!=null){
+            inputStream.close();
+        }
+        return file;
+    }
 
+    private static String parseSuffix(String url) {
+
+
+        Matcher matcher = pattern.matcher(url);
+
+        String[] spUrl = url.toString().split("/");
+        int len = spUrl.length;
+        String endUrl = spUrl[len - 1];
+
+        if(matcher.find()) {
+            String[] spEndUrl = endUrl.split("\\?");
+            return spEndUrl[0].split("\\.")[1];
+        }
+        return endUrl.split("\\.")[1];
     }
 
     private void deleteFile(File file) {
@@ -154,8 +189,8 @@ public class LiveService {
         }
 
     }
-    public static  byte[] readInputStream(InputStream inputStream) throws IOException {
-        byte[] buffer = new byte[1024];
+    public static  byte[] readInputStream(InputStream inputStream,int filesize) throws IOException {
+        byte[] buffer = new byte[filesize];
         int len = 0;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         while((len = inputStream.read(buffer)) != -1) {

@@ -139,6 +139,8 @@ public class DuoBeiService {
     public UploadDocumentRes uploadDocument(String filename,File file){
 
         String result = client.uploadDocument(filename,file);
+
+        System.out.println("file================"+result);
         UploadDocumentRes res = new UploadDocumentRes();
         try {
              res = om.readValue(result, UploadDocumentRes.class);
