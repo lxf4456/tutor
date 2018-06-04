@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class BaseRes extends Base {
 		
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S"); 
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 	/**
 	 * 
 	 */
