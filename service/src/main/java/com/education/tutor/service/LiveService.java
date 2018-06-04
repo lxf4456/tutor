@@ -26,7 +26,7 @@ public class LiveService {
 
     final static Pattern pattern = Pattern.compile("\\S*[?]\\S*");
 
-    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
 
 
     //创建房间

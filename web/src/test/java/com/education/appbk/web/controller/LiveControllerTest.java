@@ -47,7 +47,7 @@ public class LiveControllerTest {
         req.setLength(60);
 
 
-        CreateRoomRes res = testRestTemplate.postForObject("/live/createRoom", req, CreateRoomRes.class);
+        CreateRoomRes res = testRestTemplate.postForObject("http://39.106.143.18:7080/live/createRoom", req, CreateRoomRes.class);
 
     }
 }
