@@ -54,17 +54,17 @@ public class DuoBeiService {
         return res;
     }
 
-//    //修改房间和时长
-//    public EditRoomScheduleRes updateRoomSchedule(String roomId, Date startTime, int duration){
-//        String result = client.u(roomId,startTime,duration);
-//        EditRoomScheduleRes res = new EditRoomScheduleRes();
-//        try {
-//             res = om.readValue(result, EditRoomScheduleRes.class);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return res;
-//    }
+    //修改房间和时长
+    public EditRoomScheduleRes updateRoomSchedule(String roomId, Date startTime, int duration){
+        String result = client.updateRoomSchedule(roomId,startTime,duration);
+        EditRoomScheduleRes res = new EditRoomScheduleRes();
+        try {
+             res = om.readValue(result, EditRoomScheduleRes.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
     //获取进入放假你的url
     public GetRoomEnterUrlRes generateRoomEnterUrl(String uid, String nickname, String roomId, String userRole, String deviceType){
         String result = client.generateRoomEnterUrl(uid,nickname,roomId,userRole,deviceType);

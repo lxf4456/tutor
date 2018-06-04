@@ -98,11 +98,12 @@ public class LiveService {
     //上传文件到房间
     public UploadFileUrlRes uploadFileUrl(UploadFileUrlReq req){
         UploadFileUrlRes res = new UploadFileUrlRes();
+        File file =null;
         try {
-            File file = getFileFromUrl(req.getFileUrl());
+             file = getFileFromUrl(req.getFileUrl());
 
             //编辑课程时间
-            com.education.duobei.vo.UploadDocumentRes uploadDocumentRes = duoBeiService.uploadDocument(req.getFilename(), file);
+            com.education.duobei.vo.UploadDocumentRes uploadDocumentRes = duoBeiService.uploadDocument(req.getFilename()+"."+parseSuffix(req.getFileUrl()), file);
             if (!uploadDocumentRes.isSuccess()) {
                 res.setCode(101);
                 res.setMessage(uploadDocumentRes.getError());
@@ -114,10 +115,14 @@ public class LiveService {
 
             duoBeiService.attatchDocument(uploadDocumentRes.getUuid(), req.getRoomId());
             res.setCode(0);
-            deleteFile(file);
+
         }catch (Exception e){
             res.setCode(101);
             e.printStackTrace();
+        }finally {
+            if(file!=null){
+                deleteFile(file);
+            }
         }
 
 
@@ -145,7 +150,10 @@ public class LiveService {
         if(!saveDir.exists()){
             saveDir.mkdir();
         }
-        File file = new File(saveDir+File.separator+UUID.randomUUID()+"."+parseSuffix(urlStr));
+
+        String newUrl = saveDir+File.separator+UUID.randomUUID()+"."+parseSuffix(urlStr);
+
+        File file = new File(newUrl);
         FileOutputStream fos = new FileOutputStream(file);
         fos.write(getData);
         if(fos!=null){
