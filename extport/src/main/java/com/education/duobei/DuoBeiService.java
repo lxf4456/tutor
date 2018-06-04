@@ -55,8 +55,8 @@ public class DuoBeiService {
     }
 
     //修改房间和时长
-    public EditRoomScheduleRes updateRoomSchedule(String roomId, Date startTime, int duration){
-        String result = client.updateRoomSchedule(roomId,startTime,duration);
+    public EditRoomScheduleRes updateRoomSchedule(String roomId, Date startTime, int length){
+        String result = client.updateRoomScheduleByMinute(roomId,startTime,length);
         EditRoomScheduleRes res = new EditRoomScheduleRes();
         try {
              res = om.readValue(result, EditRoomScheduleRes.class);

@@ -1,6 +1,8 @@
 package com.education.appbk.web.controller;
 
 import com.education.Application;
+import com.education.tutor.api.live.CreateRoomReq;
+import com.education.tutor.api.live.CreateRoomRes;
 import com.education.tutor.api.live.UploadFileUrlReq;
 import com.education.tutor.api.live.UploadFileUrlRes;
 import org.apache.commons.logging.Log;
@@ -36,5 +38,16 @@ public class LiveControllerTest {
         logger.info("====="+res.getUuid());
     }
 
+    @Test
+    public void createRoom() {
+        CreateRoomReq req = new CreateRoomReq();
+        req.setTitle("liu test  room");
+        req.setStartTime("2018-08-23T09:20:05Z");
+        req.setMenNum(1);
+        req.setLength(60);
 
+
+        CreateRoomRes res = testRestTemplate.postForObject("/live/createRoom", req, CreateRoomRes.class);
+
+    }
 }

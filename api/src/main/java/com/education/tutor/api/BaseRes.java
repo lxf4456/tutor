@@ -14,7 +14,7 @@ public class BaseRes extends Base {
 	int code = -1;
 	
 	String message = "";
-	
+
 	String actionTime = sdf.format(new Date());
 	
 	Integer total = 0;
@@ -58,5 +58,5 @@ public class BaseRes extends Base {
 	}
 	
 	
-	
+
 }

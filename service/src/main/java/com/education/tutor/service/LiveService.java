@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,6 +25,8 @@ public class LiveService {
     DuoBeiService duoBeiService;
 
     final static Pattern pattern = Pattern.compile("\\S*[?]\\S*");
+
+    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 
 
     //创建房间
@@ -42,7 +45,7 @@ public class LiveService {
 
 
         //String title, boolean video, Date startTime, int duration, String roomType
-        com.education.duobei.vo.CreateRoomRes createRoomRes = duoBeiService.createRoom(req.getTitle(),true, DateUtils.getDate2Str(req.getStartTime(),DateUtils.FORMATSTR),req.getLength(),roomType);
+        com.education.duobei.vo.CreateRoomRes createRoomRes = duoBeiService.createRoom(req.getTitle(),true, df.parse(req.getStartTime()),req.getLength(),roomType);
 
         if(!createRoomRes.isSuccess()){
             res.setCode(101);
@@ -51,12 +54,15 @@ public class LiveService {
         }
 
         Room room = new Room();
-        room.setEndTime(createRoomRes.getRoom().getEndTime());
+
+
+
+        room.setEndTime(df.format(DateUtils.getDate2Str(createRoomRes.getRoom().getEndTime(),DateUtils.FORMATSTR)));
         room.setHostCode(createRoomRes.getRoom().getHostCode());
         room.setRoomId(createRoomRes.getRoom().getRoomId());
         room.setTitle(createRoomRes.getRoom().getTitle());
-        room.setStartTime(createRoomRes.getRoom().getStartTime());
-        room.setValidEndTime(createRoomRes.getRoom().getValidEndTime());
+        room.setStartTime(df.format(DateUtils.getDate2Str(createRoomRes.getRoom().getStartTime(),DateUtils.FORMATSTR)));
+        room.setValidEndTime(df.format(DateUtils.getDate2Str(createRoomRes.getRoom().getValidEndTime(),"yyyy-MM-dd HH:mm")));
 
         res.setRoom(room);
         res.setCode(0);
@@ -70,7 +76,11 @@ public class LiveService {
         //编辑多贝课程名称
         duoBeiService.updateRoomTitle(req.getRoomId(),req.getTitle());
         //编辑课程时间
-      //  duoBeiService.updateRoomSchedule(req.getRoomId(),req.getStartTime(),req.getDuration());
+        try {
+            duoBeiService.updateRoomSchedule(req.getRoomId(), df.parse(req.getStartTime()), req.getLangth());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         res.setCode(0);
         return res;
     }
