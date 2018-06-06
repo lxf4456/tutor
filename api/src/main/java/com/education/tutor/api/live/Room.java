@@ -17,6 +17,10 @@ public class Room implements Serializable {
         //主讲人邀请码
         private  String hostCode;
 
+        private String coverImgUrl;
+
+        private String convertStatus;
+
         public String getRoomId() {
             return roomId;
         }
@@ -73,4 +77,19 @@ public class Room implements Serializable {
             this.hostCode = hostCode;
         }
 
+    public String getCoverImgUrl() {
+        return coverImgUrl;
+    }
+
+    public void setCoverImgUrl(String coverImgUrl) {
+        this.coverImgUrl = coverImgUrl;
+    }
+
+    public String getConvertStatus() {
+        return convertStatus;
+    }
+
+    public void setConvertStatus(String convertStatus) {
+        this.convertStatus = convertStatus;
+    }
 }
