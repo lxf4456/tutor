@@ -4,6 +4,7 @@ import com.duobeiyun.DuobeiYunClient;
 import com.education.duobei.DuoBeiService;
 import com.education.tutor.api.live.*;
 import com.education.tutor.util.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,8 +100,9 @@ public class LiveService {
         res.setUuid(uploadDocumentRes.getUuid());
 
 
-        duoBeiService.attatchDocument(uploadDocumentRes.getUuid(),req.getRoomId());
-
+        if(req.getRoomId() !=null && StringUtils.isNotEmpty(req.getRoomId())&&req.getRoomId().length()>8){
+            duoBeiService.attatchDocument(uploadDocumentRes.getUuid(), req.getRoomId());
+        }
         res.setCode(0);
         return res;
     }
@@ -122,8 +124,10 @@ public class LiveService {
 
             res.setUuid(uploadDocumentRes.getUuid());
 
+            if(req.getRoomId() !=null && StringUtils.isNotEmpty(req.getRoomId())&&req.getRoomId().length()>8){
+                duoBeiService.attatchDocument(uploadDocumentRes.getUuid(), req.getRoomId());
+            }
 
-            duoBeiService.attatchDocument(uploadDocumentRes.getUuid(), req.getRoomId());
             res.setCode(0);
 
         }catch (Exception e){
