@@ -3,8 +3,8 @@ package com.education.duobei;
 import com.duobeiyun.DuobeiYunClient;
 import com.education.duobei.vo.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
