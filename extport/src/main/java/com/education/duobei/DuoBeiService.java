@@ -3,6 +3,7 @@ package com.education.duobei;
 import com.duobeiyun.DuobeiYunClient;
 import com.education.duobei.vo.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -166,11 +167,19 @@ public class DuoBeiService {
     }
 
 
-    //上传文档
+    //删除文档
     public RemoveDocumentRes removeDocument(String documentId,String roomId){
 
-        String result = client.removeDocument(roomId,documentId);
+        String result ="";
         RemoveDocumentRes res = new RemoveDocumentRes();
+        if(roomId !=null&& StringUtils.isNotEmpty(roomId)){
+             result = client.removeDocument(roomId,documentId);
+        }else {
+            result = client.deleteDocumet(documentId);
+        }
+
+
+
         try {
              res = om.readValue(result, RemoveDocumentRes.class);
         } catch (IOException e) {

@@ -1,10 +1,7 @@
 package com.education.appbk.web.controller;
 
 import com.education.Application;
-import com.education.tutor.api.live.CreateRoomReq;
-import com.education.tutor.api.live.CreateRoomRes;
-import com.education.tutor.api.live.UploadFileUrlReq;
-import com.education.tutor.api.live.UploadFileUrlRes;
+import com.education.tutor.api.live.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
@@ -37,6 +34,27 @@ public class LiveControllerTest {
         UploadFileUrlRes res = testRestTemplate.postForObject("/live/uploadFileUrl", req, UploadFileUrlRes.class);
         logger.info("====="+res.getUuid());
     }
+
+
+    @Test
+    public void previewDocUrl() {
+        PreviewDocUrlReq req = new PreviewDocUrlReq();
+        req.setDocumentId("2d9b565d-2dc4-455c-9324-80fc07dc2e11");
+
+
+        PreviewDocUrlRes res = testRestTemplate.postForObject("/live/previewDocUrl", req, PreviewDocUrlRes.class);
+        logger.info("====="+res.getUrl());
+    }
+
+    @Test
+    public void removeDocument() {
+        RemoveDocumentReq req = new RemoveDocumentReq();
+        req.setDocumentId("2d9b565d-2dc4-455c-9324-80fc07dc2e11");
+
+        RemoveDocumentRes res = testRestTemplate.postForObject("/live/removeDocument", req, RemoveDocumentRes.class);
+        logger.info("====="+res.getCode());
+    }
+
 
     @Test
     public void createRoom() {

@@ -254,13 +254,13 @@ public class LiveService {
     public PreviewDocUrlRes previewDocUrl(PreviewDocUrlReq req){
         PreviewDocUrlRes res = new PreviewDocUrlRes();
         //编辑课程时间
-        com.education.duobei.vo.PreviewDocUrlRes removeDocumentRes = duoBeiService.generateDocPreviewUrl(req.getDocumentId());
-        if(!removeDocumentRes.isSuccess()){
+        com.education.duobei.vo.PreviewDocUrlRes previewDocUrlRes = duoBeiService.generateDocPreviewUrl(req.getDocumentId());
+        if(!previewDocUrlRes.isSuccess()){
             res.setCode(101);
-            res.setMessage(removeDocumentRes.getError());
+            res.setMessage(previewDocUrlRes.getError());
             return res;
         }
-
+        res.setUrl(previewDocUrlRes.getUrl());
         res.setCode(0);
         return res;
     }
