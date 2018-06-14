@@ -141,7 +141,6 @@ public class DuoBeiService {
 
         String result = client.uploadDocument(filename,file);
 
-        System.out.println("file================"+result);
         UploadDocumentRes res = new UploadDocumentRes();
         try {
              res = om.readValue(result, UploadDocumentRes.class);
@@ -177,8 +176,6 @@ public class DuoBeiService {
         }else {
             result = client.deleteDocumet(documentId);
         }
-
-
 
         try {
              res = om.readValue(result, RemoveDocumentRes.class);

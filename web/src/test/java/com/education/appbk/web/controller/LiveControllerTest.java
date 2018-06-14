@@ -49,7 +49,8 @@ public class LiveControllerTest {
     @Test
     public void removeDocument() {
         RemoveDocumentReq req = new RemoveDocumentReq();
-        req.setDocumentId("2d9b565d-2dc4-455c-9324-80fc07dc2e11");
+        req.setDocumentId("e724fd67-7f3c-477e-a73b-c7b2a3f937701");
+        req.setRoomId("jz8cd1d208159c42beb73852823eccc1bb");
 
         RemoveDocumentRes res = testRestTemplate.postForObject("/live/removeDocument", req, RemoveDocumentRes.class);
         logger.info("====="+res.getCode());

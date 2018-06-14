@@ -221,11 +221,11 @@ public class CommonService {
         String redisKeySms = SMSVERIFYCODE + countryCode + "-" + mobile;
         // 生成短信验证码并存入
        // String smsCode = redisTemplate.opsForValue().get(redisKeySms);
-//        if (smsCode == null || StringUtils.isEmpty(smsCode)) {
+        if (smsCode == null || StringUtils.isEmpty(smsCode)) {
             smsCode = String.valueOf((int) ((Math.random() * 9 + 1) * 100000));
-//            redisTemplate.opsForValue().set(redisKeySms, smsCode, Integer.parseInt(smsVerifyCodeDurationMinutes),
-//                    TimeUnit.MINUTES);
-//        }
+            redisTemplate.opsForValue().set(redisKeySms, smsCode, Integer.parseInt(smsVerifyCodeDurationMinutes),
+                    TimeUnit.MINUTES);
+        }
 
         SendVerifyCodeReq req = new SendVerifyCodeReq();
 
