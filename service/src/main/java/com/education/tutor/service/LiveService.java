@@ -5,6 +5,8 @@ import com.education.duobei.DuoBeiService;
 import com.education.tutor.api.live.*;
 import com.education.tutor.util.DateUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +27,7 @@ public class LiveService {
     @Autowired
     DuoBeiService duoBeiService;
 
+    private final Log logger = LogFactory.getLog(this.getClass());
 
     final static Pattern pattern = Pattern.compile("\\S*[?]\\S*");
 
@@ -79,6 +82,7 @@ public class LiveService {
         duoBeiService.updateRoomTitle(req.getRoomId(),req.getTitle());
         //编辑课程时间
         try {
+            logger.debug(req.getRoomId()+"--------------"+req.getLangth());
             duoBeiService.updateRoomSchedule(req.getRoomId(), df.parse(req.getStartTime()), req.getLangth());
         }catch (Exception e){
             e.printStackTrace();
