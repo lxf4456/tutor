@@ -1,6 +1,8 @@
 package com.education.classin;
 
 import com.qcloud.sms.SmsSenderUtil;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
-import java.util.Calendar;
+import java.net.URL;
+import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,56 +20,68 @@ import java.util.Map;
 public class ClassInSender {
 	String  SID = "2674186";
 	String secret = "oMcVbLqO";
-    String url = "http://www.eeo.cn/partner/api/course.api.php?action=";
+    String cliassIn_url = "http://www.eeo.cn/partner/api/course.api.php?action=";
+	private final Log logger = LogFactory.getLog(this.getClass());
 
 
-	public ClassInBasicRes send(ClassInBasicReq vo) throws Exception {
-
+	public ClassInBasicRes send(ClassInBasicReq vo) {
 		SmsSenderUtil util = new SmsSenderUtil();
-		long curTime = Calendar.getInstance().getTimeInMillis()/1000;
-
-		// 按照协议组织 post 请求包体
-		JSONObject data = new JSONObject();
-        data.put("SID", SID);
-        data.put("safeKey", util.stringMD5(secret+curTime));
-        data.put("timeStamp", curTime);
-
-		for (Map.Entry<String, Object> entry : getKeyAndValue(vo).entrySet()) {
-			System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-			data.put(entry.getKey(),entry.getValue());
-		}
-
-		String wholeUrl = url+vo.getAction();
-        HttpURLConnection conn = util.getPostHttpConn(wholeUrl);
-
-        OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream(), "utf-8");
-        wr.write(data.toString());
-        wr.flush();
-
-        // 显示 POST 请求返回的内容
-        StringBuilder sb = new StringBuilder();
-        int httpRspCode = conn.getResponseCode();
 		ClassInBasicRes res = new ClassInBasicRes();
-        if (httpRspCode == HttpURLConnection.HTTP_OK) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-            String line = null;
-            while ((line = br.readLine()) != null) {
-                sb.append(line);
-            }
-            br.close();
-			JSONObject json = new JSONObject(sb.toString());
-			res.setErrno(json.getJSONObject("error_info").getInt("errno"));
-			res.setError(json.getJSONObject("error_info").getString("error"));
-			res.setData(json.getString("data"));
-		} else {
-			res.setErrno(httpRspCode);
-			res.setError("http error " + httpRspCode + " " + conn.getResponseMessage());
-        }
-        
-        return res;
+		long curTime = System.currentTimeMillis()/1000L;
+		try {
+			//发送POST请求
+			URL url = new URL(cliassIn_url+vo.getAction());
+
+			StringBuffer parm = new StringBuffer();
+			parm.append("SID=").append(SID).append("&");
+			parm.append("safeKey=").append(getMD5Str(secret+curTime)).append("&");
+			parm.append("timeStamp=").append(curTime).append("&");
+
+			for (Map.Entry<String, Object> entry : getKeyAndValue(vo).entrySet()) {
+				System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+				parm.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+			}
+			logger.debug("url------------->"+cliassIn_url+vo.getAction());
+			logger.debug("parm------------->"+parm.toString());
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.setRequestProperty("Connection", "Keep-Alive");
+			conn.setRequestProperty("Cache-Control", "no-cache");
+			conn.setUseCaches(false);
+			conn.setDoOutput(true);
+			conn.setRequestProperty("Content-Length", "" + (parm.toString().length()-1));
+			OutputStreamWriter out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+			out.write(parm.toString().substring(0,parm.toString().length()-1));
+			out.flush();
+			out.close();
+			//获取响应状态
+			StringBuilder sb = new StringBuilder();
+			int httpRspCode = conn.getResponseCode();
+			if (httpRspCode == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+				String line = null;
+				while ((line = br.readLine()) != null) {
+					sb.append(line);
+				}
+				br.close();
+				JSONObject json = new JSONObject(sb.toString());
+				logger.debug("------------->"+sb.toString());
+				res.setErrno(json.getJSONObject("error_info").getInt("errno"));
+				res.setError(json.getJSONObject("error_info").getString("error"));
+				if(json.has("data")){
+					res.setData(json.getString("data"));
+				}
+
+			} else {
+				res.setErrno(httpRspCode);
+				res.setError("http error " + httpRspCode + " " + conn.getResponseMessage());
+			}
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+		}
+		return res;
 	}
-
-
 
 
 	public static Map<String, Object> getKeyAndValue(Object obj) {
@@ -92,20 +107,38 @@ public class ClassInSender {
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
 			}
-
-			/*
-			 * String type = f.getType().toString();//得到此属性的类型 if
-			 * (type.endsWith("String")) {
-			 * System.out.println(f.getType()+"\t是String"); f.set(obj,"12") ;
-			 * //给属性设值 }else if(type.endsWith("int") ||
-			 * type.endsWith("Integer")){
-			 * System.out.println(f.getType()+"\t是int"); f.set(obj,12) ; //给属性设值
-			 * }else{ System.out.println(f.getType()+"\t"); }
-			 */
-
 		}
-		System.out.println("单个对象的所有键值==反射==" + map.toString());
 		return map;
+	}
+
+
+	private String getMD5Str(String str) {
+		String result = "";
+		try {
+
+			MessageDigest md5 = MessageDigest.getInstance("MD5");
+			md5.update((str).getBytes("UTF-8"));
+			byte b[] = md5.digest();
+
+			int i;
+			StringBuffer buf = new StringBuffer("");
+
+			for (int offset = 0; offset < b.length; offset++) {
+				i = b[offset];
+				if (i < 0) {
+					i += 256;
+				}
+				if (i < 16) {
+					buf.append("0");
+				}
+				buf.append(Integer.toHexString(i));
+			}
+
+			result = buf.toString();
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return  result;
 	}
 
 }

@@ -3,9 +3,9 @@ package com.education.classin;
 import java.io.Serializable;
 
 public class ClassInBasicRes implements Serializable {
-    private String error;
-    private int errno = 0;
-    private String data;
+     String error;
+     int errno = 0;
+     String data;
 
 
 

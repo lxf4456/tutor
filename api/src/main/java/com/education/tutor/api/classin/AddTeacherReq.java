@@ -1,14 +1,13 @@
-package com.education.classin.vo;
+package com.education.tutor.api.classin;
 
-import com.education.classin.ClassInBasicReq;
+import com.education.tutor.api.BaseReq;
 
 import java.io.File;
 
 /**
  * Created by 雪峰 on 2018/5/6.
  */
-public class AddTeacherReq extends ClassInBasicReq {
-    private transient static final String action = "addTeacher";
+public class AddTeacherReq extends BaseReq {
 
     private String teacherAccount;
 
@@ -16,10 +15,6 @@ public class AddTeacherReq extends ClassInBasicReq {
 
     private File Filedata;
 
-    @Override
-    public String getAction() {
-        return action;
-    }
 
     public String getTeacherAccount() {
         return teacherAccount;

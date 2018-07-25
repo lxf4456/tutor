@@ -26,11 +26,12 @@ public class ClassInService {
             req.setNickname(nickname);
             req.setPassword(password);
             req.setTelephone(telephone);
-            RegisterRes classInBasicRes = (RegisterRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes =classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
                 res.setStudentId(Long.parseLong(classInBasicRes.getData()));
             }
-
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -48,11 +49,12 @@ public class ClassInService {
             req.setFiledata(filedata);
             req.setFolderId(folderId);
 
-            AddCourseRes classInBasicRes = (AddCourseRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
                 res.setCourseId(Long.parseLong(classInBasicRes.getData()));
             }
-
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +70,10 @@ public class ClassInService {
             req.setIdentity(identity);
             req.setStudentAccount(studentAccount);
             req.setStudentName(studentName);
-            res = (AddCourseStudentRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +87,12 @@ public class ClassInService {
             req.setFiledata(Filedata);
             req.setTeacherAccount(teacherAccount);
             req.setTeacherName(teacherName);
-            classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+            if(classInBasicRes.getErrno() == 1){
+                res.setTeachId(Long.parseLong(classInBasicRes.getData()));
+            }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,17 +105,19 @@ public class ClassInService {
         AddOneCourseClassRes res = new AddOneCourseClassRes();
         try {
             AddOneCourseClassReq req = new AddOneCourseClassReq();
-            req.setBeginTime(beginTime);
+            req.setBeginTime(beginTime/1000);
             req.setClassName(className);
             req.setCourseId(courseId);
-            req.setEndTime(endTime);
+            req.setEndTime(endTime/1000);
             req.setTeacherAccount(teacherAccount);
             req.setTeacherName(teacherName);
 
-            AddOneCourseClassRes classInBasicRes = (AddOneCourseClassRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
                 res.setClassId(Long.parseLong(classInBasicRes.getData()));
             }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +132,10 @@ public class ClassInService {
             ChangeTeacherReq req =new ChangeTeacherReq();
             req.setCourseId(courseId);
             req.setTeacherAccount(teacherAccount);
-            res = (ChangeTeacherRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +152,10 @@ public class ClassInService {
             req.setTeacherName(teacherName);
             req.setSt_id(st_id);
             req.setFiledata(Filedata);
-            res = (EditTeacherRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -151,7 +169,10 @@ public class ClassInService {
             DelCourseClassReq req = new DelCourseClassReq();
             req.setClassId(classId);
             req.setCourseId(courseId);
-            res = (DelCourseClassRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -165,7 +186,10 @@ public class ClassInService {
         try {
             DelCourseReq req = new DelCourseReq();
             req.setCourseId(courseId);
-            res = (DelCourseRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -182,7 +206,10 @@ public class ClassInService {
             req.setCourseId(courseId);
             req.setIdentity(identity);
             req.setStudentAccount(studentAccount);
-            res = (DelCourseStudentRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,14 +222,17 @@ public class ClassInService {
         EditCourseClassRes res = new EditCourseClassRes();
         try {
             EditCourseClassReq req = new EditCourseClassReq();
-            req.setBeginTime(beginTime);
+            req.setBeginTime(beginTime/1000);
             req.setClassId(classId);
             req.setClassName(className);
-            req.setEndTime(endTime);
+            req.setEndTime(endTime/1000);
             req.setTeacherAccount(teacherAccount);
             req.setTeacherName(teacherName);
             req.setCourseId(courseId);
-            res = (EditCourseClassRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -221,7 +251,10 @@ public class ClassInService {
             req.setFiledata(filedata);
             req.setFolderId(folderId);
 
-            res = (EditCourseRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,13 +265,17 @@ public class ClassInService {
 
     //修改密码
     public EditPasswortRes editPasswort(  String telephone,
-             String password) {
+             String password,String oldMd5pass) {
         EditPasswortRes res = new EditPasswortRes();
         try {
             EditPasswortReq req = new EditPasswortReq();
             req.setPassword(password);
             req.setTelephone(telephone);
-            res = (EditPasswortRes)classInSender.send(req);
+            req.setOldMd5pass(oldMd5pass);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -255,7 +292,10 @@ public class ClassInService {
             EditStudentPhoneReq req = new EditStudentPhoneReq();
             req.setOldTelephone(oldTelephone);
             req.setTelephone(telephone);
-            res = (EditStudentPhoneRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -271,7 +311,10 @@ public class ClassInService {
             req.setFiledata(filedata);
             req.setSt_id(st_id);
             req.setTeacherName(teacherName);
-            res = (EditTeacherRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -287,7 +330,10 @@ public class ClassInService {
             EditUserBasicReq req = new EditUserBasicReq();
             req.setNickname(nickname);
             req.setTelephone(telephone);
-            res = (EditUserBasicRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -301,10 +347,12 @@ public class ClassInService {
             GetClassVideoUrlReq req = new GetClassVideoUrlReq();
             req.setClassId(classId);
             req.setCourseId(courseId);
-            ClassInBasicRes result = (ClassInBasicRes)classInSender.send(req);
-            if(result.getErrno() == 1){
-                res= om.readValue(result.getData(), GetClassVideoUrlRes.class);
+            ClassInBasicRes classInBasicRes = (ClassInBasicRes)classInSender.send(req);
+            if(classInBasicRes.getErrno() == 1){
+                res= om.readValue(classInBasicRes.getData(), GetClassVideoUrlRes.class);
             }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -315,10 +363,12 @@ public class ClassInService {
     public GetDownloadClientUrlRes getDownloadClientUrl() {
         GetDownloadClientUrlRes res = new GetDownloadClientUrlRes();
         try {
-            ClassInBasicRes result = (ClassInBasicRes)classInSender.send(new GetDownloadClientUrlReq());
-            if(result.getErrno() == 1){
-                res= om.readValue(result.getData(), GetDownloadClientUrlRes.class);
+            ClassInBasicRes classInBasicRes = (ClassInBasicRes)classInSender.send(new GetDownloadClientUrlReq());
+            if(classInBasicRes.getErrno() == 1){
+                res= om.readValue(classInBasicRes.getData(), GetDownloadClientUrlRes.class);
             }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -330,10 +380,12 @@ public class ClassInService {
         try {
             GetTempLoginKeyReq req = new GetTempLoginKeyReq();
             req.setTelephone(telephone);
-            GetTempLoginKeyRes classInBasicRes = (GetTempLoginKeyRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
                 res.setKey(classInBasicRes.getData());
             }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -350,10 +402,12 @@ public class ClassInService {
             req.setClassId(classId);
             req.setCourseId(courseId);
             req.setTelephone(telephone);
-            GetLoginLinkedRes classInBasicRes = (GetLoginLinkedRes)classInSender.send(req);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
                 res.setUrl(classInBasicRes.getData());
             }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -361,4 +415,59 @@ public class ClassInService {
         return res;
     }
 
+
+    //创建文件夹
+    public CreateFolderRes createFolder(String folderId,String folderName) {
+        CreateFolderRes res = new CreateFolderRes();
+        try {
+            CreateFolderReq req = new CreateFolderReq();
+            req.setFolderId(folderId);
+            req.setFolderName(folderName);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+
+    //上传文件
+    public UploadFileRes uploadFile(String folderId,File folderName) {
+        UploadFileRes res = new UploadFileRes();
+        try {
+            UploadFileReq req = new UploadFileReq();
+            req.setFolderId(folderId);
+            req.setFiledata(folderName);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+            if(classInBasicRes.getErrno() == 1){
+                res.setFileId(classInBasicRes.getData());
+            }
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+    //删除文件
+    public DelFileRes delFile(String folderId) {
+        DelFileRes res = new DelFileRes();
+        try {
+            DelFileReq req = new DelFileReq();
+            req.setFileId(folderId);
+            ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            res.setErrno(classInBasicRes.getErrno());
+            res.setError(classInBasicRes.getError());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
 }

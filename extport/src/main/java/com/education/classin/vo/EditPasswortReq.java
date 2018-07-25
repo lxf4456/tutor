@@ -11,6 +11,7 @@ public class EditPasswortReq extends ClassInBasicReq {
 
     private  String telephone;
     private String password;
+    private String oldMd5pass;
 
 
 
@@ -33,5 +34,13 @@ public class EditPasswortReq extends ClassInBasicReq {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getOldMd5pass() {
+        return oldMd5pass;
+    }
+
+    public void setOldMd5pass(String oldMd5pass) {
+        this.oldMd5pass = oldMd5pass;
     }
 }
