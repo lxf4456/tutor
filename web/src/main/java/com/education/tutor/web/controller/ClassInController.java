@@ -5,6 +5,8 @@ import com.education.tutor.service.LiveClassInService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 /**
  * Created by 雪峰 on 2018/5/13.
  */
@@ -191,7 +193,7 @@ public class ClassInController extends AuthenticatedController{
      * */
     @RequestMapping(method = RequestMethod.POST, path = "/uploadFile", produces = "application/json;charset=utf8")
     @ResponseBody
-    public UploadFileRes getRoomEnterUrlRes(@RequestBody UploadFileReq req) {
+    public UploadFileRes getRoomEnterUrlRes(@RequestBody UploadFileReq req) throws IOException {
         UploadFileRes res = liveClassInService.uploadFile(req);
         return res;
     }
