@@ -2,6 +2,7 @@ package com.education.classin;
 
 import com.education.classin.vo.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -421,6 +422,14 @@ public class ClassInService {
         CreateFolderRes res = new CreateFolderRes();
         try {
             CreateFolderReq req = new CreateFolderReq();
+
+            if(StringUtils.isEmpty(folderId)){
+                GetTopFolderIdReq getTopFolderIdReq = new GetTopFolderIdReq();
+                ClassInBasicRes classInBasicRes = classInSender.send(getTopFolderIdReq);
+                folderId =classInBasicRes.getData();
+            }
+
+
             req.setFolderId(folderId);
             req.setFolderName(folderName);
             ClassInBasicRes classInBasicRes = classInSender.send(req);
