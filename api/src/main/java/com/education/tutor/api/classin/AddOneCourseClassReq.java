@@ -22,6 +22,9 @@ public class AddOneCourseClassReq extends BaseReq {
     private String teacherName;
     //默认为6，最大上限值调整为12
     private int seatNum;
+    private String folderId;
+
+
 
 
     public long getCourseId() {
@@ -78,5 +81,13 @@ public class AddOneCourseClassReq extends BaseReq {
 
     public void setSeatNum(int seatNum) {
         this.seatNum = seatNum;
+    }
+
+    public String getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(String folderId) {
+        this.folderId = folderId;
     }
 }

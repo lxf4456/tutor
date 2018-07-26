@@ -7,6 +7,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
 
@@ -17,6 +18,8 @@ import java.text.SimpleDateFormat;
 public class LiveClassInService {
     @Autowired
     ClassInService classInService;
+    @Autowired
+    LiveService liveService;
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -83,7 +86,7 @@ public class LiveClassInService {
     //增加课节
     public AddOneCourseClassRes addOneCourseClass(AddOneCourseClassReq req) {
         AddOneCourseClassRes res = new AddOneCourseClassRes();
-        com.education.classin.vo.AddOneCourseClassRes addOneCourseClassRes = classInService.addOneCourseClass(  req.getCourseId(),  req.getClassName(), req.getBeginTime(), req.getEndTime(), req.getTeacherAccount(), req.getTeacherName(), req.getSeatNum());
+        com.education.classin.vo.AddOneCourseClassRes addOneCourseClassRes = classInService.addOneCourseClass(  req.getCourseId(),  req.getClassName(), req.getBeginTime(), req.getEndTime(), req.getTeacherAccount(), req.getTeacherName(), req.getSeatNum(),req.getFolderId());
 
         if(addOneCourseClassRes.getErrno()!= 1){
             res.setCode(101);
@@ -246,6 +249,7 @@ public class LiveClassInService {
             res.setMessage(createFolderRes.getError());
             return res;
         }
+        res.setFolderId(createFolderRes.getFolderId());
         res.setCode(0);
         return res;
     }
@@ -253,9 +257,11 @@ public class LiveClassInService {
 
 
     //上传文件
-    public UploadFileRes uploadFile(UploadFileReq req) {
+    public UploadFileRes uploadFile(UploadFileReq req) throws IOException {
         UploadFileRes res = new UploadFileRes();
-        com.education.classin.vo.UploadFileRes uploadFileRes = classInService.uploadFile(req.getFolderId(),req.getFiledata());
+
+
+        com.education.classin.vo.UploadFileRes uploadFileRes = classInService.uploadFile(req.getFolderId(),liveService.getFileFromUrl(req.getUrl()));
         if(uploadFileRes.getErrno()!= 1){
             res.setCode(101);
             res.setMessage(uploadFileRes.getError());

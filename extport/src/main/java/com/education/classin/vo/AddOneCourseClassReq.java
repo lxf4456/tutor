@@ -30,6 +30,8 @@ public class AddOneCourseClassReq extends ClassInBasicReq {
     //默认为6，最大上限值调整为12
     private int seatNum;
 
+    private String folderId;
+
 
     public long getCourseId() {
         return courseId;
@@ -85,5 +87,13 @@ public class AddOneCourseClassReq extends ClassInBasicReq {
 
     public void setSeatNum(int seatNum) {
         this.seatNum = seatNum;
+    }
+
+    public String getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(String folderId) {
+        this.folderId = folderId;
     }
 }

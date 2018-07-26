@@ -150,7 +150,7 @@ public class LiveService {
 
 
 
-    private  File  getFileFromUrl(String urlStr) throws IOException {
+    public  File  getFileFromUrl(String urlStr) throws IOException {
         URL url = new URL(urlStr);
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
         //设置超时间为3秒

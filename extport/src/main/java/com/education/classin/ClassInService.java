@@ -102,7 +102,9 @@ public class ClassInService {
 
 
 //增加课程
-    public AddOneCourseClassRes addOneCourseClass( long courseId, String className,long beginTime,long endTime,String teacherAccount,String teacherName,int seatNum) {
+    public AddOneCourseClassRes addOneCourseClass( long courseId, String className,long beginTime,long endTime,String teacherAccount,String teacherName,int seatNum, String folderId
+
+    ) {
         AddOneCourseClassRes res = new AddOneCourseClassRes();
         try {
             AddOneCourseClassReq req = new AddOneCourseClassReq();
@@ -112,6 +114,8 @@ public class ClassInService {
             req.setEndTime(endTime/1000);
             req.setTeacherAccount(teacherAccount);
             req.setTeacherName(teacherName);
+            req.setFolderId(folderId);
+            req.setSeatNum(seatNum);
 
             ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
@@ -429,10 +433,13 @@ public class ClassInService {
                 folderId =classInBasicRes.getData();
             }
 
-
             req.setFolderId(folderId);
             req.setFolderName(folderName);
             ClassInBasicRes classInBasicRes = classInSender.send(req);
+
+            if(classInBasicRes.getErrno() == 1){
+                res.setFolderId(classInBasicRes.getData());
+            }
 
             res.setErrno(classInBasicRes.getErrno());
             res.setError(classInBasicRes.getError());
