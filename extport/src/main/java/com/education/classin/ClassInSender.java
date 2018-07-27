@@ -81,7 +81,7 @@ public class ClassInSender {
 				if(json.has("data")){
 					Object obj = json.get("data");
 					if (obj instanceof Integer) {
-						res.setData(String.valueOf(json.getInt("data"));
+						res.setData(String.valueOf(json.getInt("data")));
 					}else{
 						res.setData(json.getString("data"));
 					}
