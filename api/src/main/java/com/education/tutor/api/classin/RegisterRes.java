@@ -7,13 +7,13 @@ import com.education.tutor.api.BaseRes;
  */
 public class RegisterRes extends BaseRes {
 
-    private long studentId;
+    private String studentId;
 
-    public long getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(long studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 }

@@ -33,7 +33,7 @@ public class ClassInService {
             req.setTelephone(telephone);
             ClassInBasicRes classInBasicRes =classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
-                res.setStudentId(Long.parseLong(classInBasicRes.getData()));
+                res.setStudentId(classInBasicRes.getData());
             }
             res.setErrno(classInBasicRes.getErrno());
             res.setError(classInBasicRes.getError());
