@@ -8,14 +8,14 @@ import com.education.tutor.api.BaseRes;
  */
 public class AddOneCourseClassRes extends BaseRes {
     //课节ID
-    private long classId;
+    private String classId;
 
 
-    public long getClassId() {
+    public String getClassId() {
         return classId;
     }
 
-    public void setClassId(long classId) {
+    public void setClassId(String classId) {
         this.classId = classId;
     }
 }

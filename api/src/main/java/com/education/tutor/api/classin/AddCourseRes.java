@@ -7,13 +7,13 @@ import com.education.tutor.api.BaseRes;
  */
 public class AddCourseRes  extends BaseRes {
 
-    private long courseId;
+    private String courseId;
 
-    public long getCourseId() {
+    public String getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(long courseId) {
+    public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
 }

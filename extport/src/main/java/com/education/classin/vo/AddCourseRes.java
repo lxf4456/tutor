@@ -7,13 +7,13 @@ import com.education.classin.ClassInBasicRes;
  */
 public class AddCourseRes extends ClassInBasicRes {
 
-    private long courseId;
+    private String courseId;
 
-    public long getCourseId() {
+    public String getCourseId() {
         return courseId;
     }
 
-    public void setCourseId(long courseId) {
+    public void setCourseId(String courseId) {
         this.courseId = courseId;
     }
 }

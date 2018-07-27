@@ -56,7 +56,7 @@ public class ClassInService {
 
             ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
-                res.setCourseId(Long.parseLong(classInBasicRes.getData()));
+                res.setCourseId(classInBasicRes.getData());
             }
             res.setErrno(classInBasicRes.getErrno());
             res.setError(classInBasicRes.getError());
@@ -94,7 +94,7 @@ public class ClassInService {
             req.setTeacherName(teacherName);
             ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
-                res.setTeachId(Long.parseLong(classInBasicRes.getData()));
+                res.setTeachId(classInBasicRes.getData());
             }
             res.setErrno(classInBasicRes.getErrno());
             res.setError(classInBasicRes.getError());
@@ -123,7 +123,7 @@ public class ClassInService {
 
             ClassInBasicRes classInBasicRes = classInSender.send(req);
             if(classInBasicRes.getErrno() == 1){
-                res.setClassId(Long.parseLong(classInBasicRes.getData()));
+                res.setClassId(classInBasicRes.getData());
             }
             res.setErrno(classInBasicRes.getErrno());
             res.setError(classInBasicRes.getError());
