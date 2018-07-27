@@ -79,7 +79,12 @@ public class ClassInSender {
 				res.setErrno(json.getJSONObject("error_info").getInt("errno"));
 				res.setError(json.getJSONObject("error_info").getString("error"));
 				if(json.has("data")){
-					res.setData(json.getString("data"));
+					Object obj = json.get("data");
+					if (obj instanceof Integer) {
+						res.setData(String.valueOf(json.getInt("data"));
+					}else{
+						res.setData(json.getString("data"));
+					}
 				}
 
 			} else {
