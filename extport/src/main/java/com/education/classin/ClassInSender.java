@@ -21,6 +21,7 @@ public class ClassInSender {
 	String  SID = "2674186";
 	String secret = "oMcVbLqO";
     String cliassIn_url = "http://www.eeo.cn/partner/api/course.api.php?action=";
+	String cliassIn_cloud_url = "http://www.eeo.cn/partner/api/cloud.api.php?action=";
 	private final Log logger = LogFactory.getLog(this.getClass());
 
 
@@ -29,8 +30,15 @@ public class ClassInSender {
 		ClassInBasicRes res = new ClassInBasicRes();
 		long curTime = System.currentTimeMillis()/1000L;
 		try {
+
+			String req_url = cliassIn_url;
+			if(vo.getUrl_type() == 2){
+				req_url = cliassIn_cloud_url;
+			}
+
+			req_url = req_url+vo.getAction();
 			//发送POST请求
-			URL url = new URL(cliassIn_url+vo.getAction());
+			URL url = new URL(req_url);
 
 			StringBuffer parm = new StringBuffer();
 			parm.append("SID=").append(SID).append("&");
@@ -41,7 +49,7 @@ public class ClassInSender {
 				System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 				parm.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
 			}
-			logger.debug("url------------->"+cliassIn_url+vo.getAction());
+			logger.debug("url------------->"+req_url);
 			logger.debug("parm------------->"+parm.toString());
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("POST");

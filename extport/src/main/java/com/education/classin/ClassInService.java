@@ -429,10 +429,11 @@ public class ClassInService {
             System.out.println("CreateFolder-----------"+folderId);
             if(StringUtils.isEmpty(folderId)||StringUtils.isBlank(folderId)||"null".equals(folderId)){
                 GetTopFolderIdReq getTopFolderIdReq = new GetTopFolderIdReq();
+                getTopFolderIdReq.setUrl_type(2);
                 ClassInBasicRes classInBasicRes = classInSender.send(getTopFolderIdReq);
                 folderId =classInBasicRes.getData();
             }
-
+            req.setUrl_type(2);
             req.setFolderId(folderId);
             req.setFolderName(folderName);
             ClassInBasicRes classInBasicRes = classInSender.send(req);
@@ -475,6 +476,7 @@ public class ClassInService {
         DelFileRes res = new DelFileRes();
         try {
             DelFileReq req = new DelFileReq();
+            req.setUrl_type(2);
             req.setFileId(folderId);
             ClassInBasicRes classInBasicRes = classInSender.send(req);
 
