@@ -58,6 +58,7 @@ public class ClassInSender {
 			//获取响应状态
 			StringBuilder sb = new StringBuilder();
 			int httpRspCode = conn.getResponseCode();
+			logger.debug("httpRspCode------------->"+httpRspCode;
 			if (httpRspCode == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
 				String line = null;
@@ -65,8 +66,8 @@ public class ClassInSender {
 					sb.append(line);
 				}
 				br.close();
+				logger.debug("result------------->"+sb.toString());
 				JSONObject json = new JSONObject(sb.toString());
-				logger.debug("------------->"+sb.toString());
 				res.setErrno(json.getJSONObject("error_info").getInt("errno"));
 				res.setError(json.getJSONObject("error_info").getString("error"));
 				if(json.has("data")){
