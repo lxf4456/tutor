@@ -1,5 +1,6 @@
 package com.education.tutor.service;
 
+import com.alibaba.fastjson.JSON;
 import com.education.classin.ClassInService;
 import com.education.tutor.api.classin.*;
 import org.apache.commons.logging.Log;
@@ -249,6 +250,7 @@ public class LiveClassInService {
             res.setMessage(createFolderRes.getError());
             return res;
         }
+        logger.debug("CreateFolderRes======="+ JSON.toJSONString(res));
         res.setFolderId(createFolderRes.getFolderId());
         res.setCode(0);
         return res;

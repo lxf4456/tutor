@@ -3,6 +3,8 @@ package com.education.classin;
 import com.education.classin.vo.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class ClassInService {
     ClassInSender classInSender;
 
     ObjectMapper om = new ObjectMapper();
+
+    private final Log logger = LogFactory.getLog(this.getClass());
 
     //注册
     public RegisterRes registre(  String telephone, String nickname, String password) {
@@ -426,12 +430,11 @@ public class ClassInService {
         CreateFolderRes res = new CreateFolderRes();
         try {
             CreateFolderReq req = new CreateFolderReq();
-            System.out.println("CreateFolder-----------"+folderId);
             if(StringUtils.isEmpty(folderId)||StringUtils.isBlank(folderId)||"null".equals(folderId)){
                 GetTopFolderIdReq getTopFolderIdReq = new GetTopFolderIdReq();
                 getTopFolderIdReq.setUrl_type(2);
-                ClassInBasicRes classInBasicRes = classInSender.send(getTopFolderIdReq);
-                folderId =classInBasicRes.getData();
+                ClassInBasicRes  getTopFolderId = classInSender.send(getTopFolderIdReq);
+                folderId =getTopFolderId.getData();
             }
             req.setUrl_type(2);
             req.setFolderId(folderId);
@@ -441,7 +444,7 @@ public class ClassInService {
             if(classInBasicRes.getErrno() == 1){
                 res.setFolderId(classInBasicRes.getData());
             }
-
+            logger.debug("res======="+ req.getFolderId()+"========="+classInBasicRes.getData());
             res.setErrno(classInBasicRes.getErrno());
             res.setError(classInBasicRes.getError());
         } catch (Exception e) {
