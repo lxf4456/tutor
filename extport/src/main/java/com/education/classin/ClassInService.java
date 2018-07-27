@@ -426,8 +426,8 @@ public class ClassInService {
         CreateFolderRes res = new CreateFolderRes();
         try {
             CreateFolderReq req = new CreateFolderReq();
-
-            if(StringUtils.isEmpty(folderId)){
+            System.out.println("CreateFolder-----------"+folderId);
+            if(StringUtils.isEmpty(folderId)||StringUtils.isBlank(folderId)||"null".equals(folderId)){
                 GetTopFolderIdReq getTopFolderIdReq = new GetTopFolderIdReq();
                 ClassInBasicRes classInBasicRes = classInSender.send(getTopFolderIdReq);
                 folderId =classInBasicRes.getData();
