@@ -58,7 +58,7 @@ public class ClassInSender {
 			//获取响应状态
 			StringBuilder sb = new StringBuilder();
 			int httpRspCode = conn.getResponseCode();
-			logger.debug("httpRspCode------------->"+httpRspCode;
+			logger.debug("httpRspCode------------->"+httpRspCode);
 			if (httpRspCode == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
 				String line = null;
