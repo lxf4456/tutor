@@ -31,7 +31,7 @@ public class LiveClassInService {
         RegisterRes res = new RegisterRes();
         com.education.classin.vo.RegisterRes registerRes = classInService.registre(req.getTelephone(),req.getNickname(),req.getPassword());
 
-        if(registerRes.getErrno()!= 1){
+        if(registerRes.getErrno()!= 1&&registerRes.getErrno()!= 135){
             res.setCode(101);
             res.setMessage(registerRes.getError());
             return res;
