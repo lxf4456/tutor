@@ -32,10 +32,12 @@ public class ClassInService {
             req.setPassword(password);
             req.setTelephone(telephone);
             ClassInBasicRes classInBasicRes =classInSender.send(req);
+            res.setErrno(classInBasicRes.getErrno());
             if(classInBasicRes.getErrno() == 1||classInBasicRes.getErrno() == 135){
                 res.setStudentId(classInBasicRes.getData());
+                res.setErrno(1);
             }
-            res.setErrno(classInBasicRes.getErrno());
+
             res.setError(classInBasicRes.getError());
         } catch (Exception e) {
             e.printStackTrace();
