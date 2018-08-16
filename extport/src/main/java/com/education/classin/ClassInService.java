@@ -32,7 +32,7 @@ public class ClassInService {
             req.setPassword(password);
             req.setTelephone(telephone);
             ClassInBasicRes classInBasicRes =classInSender.send(req);
-            if(classInBasicRes.getErrno() == 1){
+            if(classInBasicRes.getErrno() == 1||classInBasicRes.getErrno() == 135){
                 res.setStudentId(classInBasicRes.getData());
             }
             res.setErrno(classInBasicRes.getErrno());
