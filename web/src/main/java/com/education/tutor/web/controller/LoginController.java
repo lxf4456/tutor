@@ -224,7 +224,7 @@ public class LoginController extends AuthenticatedController{
 		switch (req.getRegisterType()) {
 		case 1:
 			res = commonService.sendSmsVerificationCode(req.getLang(), req.getUserName(), req.getCountryCode(),
-					req.getType(),"");
+					req.getType(),req.getCode());
 			break;
 		case 2:
 			res = commonService.sendEmailVerificationCode(req.getLang(), req.getUserName().toLowerCase(), req.getType());
