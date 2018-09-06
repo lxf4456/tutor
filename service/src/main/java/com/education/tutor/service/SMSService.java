@@ -57,12 +57,21 @@ public class SMSService {
         if(!"86".equals(req.getCountryCode())){
             mobile = "00"+req.getCountryCode()+req.getUserName();
             isInternational = true;
-        }
-        //判定中英文
-        if (FieldConstants.USER_MAIN_LANG.en.name().equals(req.getLang())) {
+
             sign = SIGN_EN;
             isEn = true;
+
         }
+        //判定中英文
+//        if (FieldConstants.USER_MAIN_LANG.en.name().equals(req.getLang())) {
+//            sign = SIGN_EN;
+//            isEn = true;
+//        }
+
+
+
+
+
 
         String templateCode = "";
         String templateParam = "";
