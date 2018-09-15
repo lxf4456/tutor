@@ -15,8 +15,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,7 +53,7 @@ public class LiveService {
 
 
         //String title, boolean video, Date startTime, int duration, String roomType
-        com.education.duobei.vo.CreateRoomRes createRoomRes = duoBeiService.createRoom(req.getTitle(),true, getLocationTimeFromUTC(req.getStartTime()),req.getLength(),roomType);
+        com.education.duobei.vo.CreateRoomRes createRoomRes = duoBeiService.createRoom(req.getTitle(),true, getUTCToCST(req.getStartTime()),req.getLength(),roomType);
 
         if(!createRoomRes.isSuccess()){
             res.setCode(101);
@@ -86,7 +86,7 @@ public class LiveService {
         //编辑课程时间
         try {
             logger.debug(req.getRoomId()+"--------------"+req.getLangth());
-            duoBeiService.updateRoomSchedule(req.getRoomId(), getLocationTimeFromUTC(req.getStartTime()), req.getLangth());
+            duoBeiService.updateRoomSchedule(req.getRoomId(), getUTCToCST(req.getStartTime()), req.getLangth());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -324,18 +324,15 @@ public class LiveService {
         return res;
     }
 
-    private Date getLocationTimeFromUTC(String time){
-        SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-        df1.setTimeZone(TimeZone.getTimeZone("UTC"));
-        try {
-            return df1.parse(time);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Date getUTCToCST(String UTCStr) throws ParseException {
+            Date date = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+            date = sdf.parse(UTCStr);
+            System.out.println("UTC时间: " + date);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
+            //calendar.getTime() 返回的是Date类型，也可以使用calendar.getTimeInMillis()获取时间戳
+            return calendar.getTime();
     }
-
-
-
-
 }
