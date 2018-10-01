@@ -144,7 +144,7 @@ public class CommonController extends AuthenticatedController {
 		
 		
 		try {
-			 emailService.sendEmail(new String[]{req.getTo()}, null, null, req.getSubject(), req.getLang(), "register",
+			 emailService.sendEmail(new String[]{req.getTo()}, null, null, req.getSubject(), req.getLang(), req.getTemplateName(),
 		                new String[]{req.getText()});
 			
 		} catch (Exception e) {

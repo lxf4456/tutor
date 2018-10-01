@@ -11,21 +11,15 @@ public class SendEmailReq extends BaseReq {
 	
 	
 	private String cc;//抄送
-	private String from; //发送方
 	private String to;   //接收方
 	private String text; //内容
 	private String subject; //主题
+	private String templateName;//模板名称
 	public String getCc() {
 		return cc;
 	}
 	public void setCc(String cc) {
 		this.cc = cc;
-	}
-	public String getFrom() {
-		return from;
-	}
-	public void setFrom(String from) {
-		this.from = from;
 	}
 	public String getTo() {
 		return to;
@@ -45,8 +39,13 @@ public class SendEmailReq extends BaseReq {
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
-	
-	
-	
 
+
+	public String getTemplateName() {
+		return templateName;
+	}
+
+	public void setTemplateName(String templateName) {
+		this.templateName = templateName;
+	}
 }
