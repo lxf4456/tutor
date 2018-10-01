@@ -65,6 +65,7 @@ public class EmailService {
 			email.setFrom(smtpUsername);
 			email.setSubject(title);
 			String body = getTemplate(lang, templateName, params);
+			logger.debug("--------"+body);
 			email.setHtmlMsg(body);
 			email.setTextMsg(body);
 			email.addTo(to);
