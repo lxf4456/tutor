@@ -75,7 +75,8 @@ public class StrictWebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 				// allow anonymous resource requests
 				.antMatchers(HttpMethod.POST, "/guest/**").permitAll()
-				.antMatchers(HttpMethod.POST, "/login/**").permitAll().
+				.antMatchers(HttpMethod.POST, "/login/**").permitAll()
+				.antMatchers(HttpMethod.POST, "/common/**").permitAll().
 				antMatchers(HttpMethod.POST, "/live/**").permitAll().anyRequest().authenticated();
 		// disable page caching
 		httpSecurity.headers().cacheControl().disable();
