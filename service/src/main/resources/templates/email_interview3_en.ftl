@@ -47,10 +47,8 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="top">
-        <p>Dear${params[0]}, </p>
-    </div>
     <div class="medium">
+        <p>Dear ${params[0]}, </p>
         <p>This is a gentle reminder that the interview is on XXX. ${params[0]} will be in the online room waiting for you as scheduled. </p>
         <p>Look forward to seeing you. </p>
     </div>

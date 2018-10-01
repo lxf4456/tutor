@@ -47,10 +47,8 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="top">
-        <p>Congratulations! Dear  ${params[0]}, </p>
-    </div>
     <div class="medium">
+        <p>Dear ${params[0]}, </p>
         <p>We are delighted to inform you of being selected for Private Education Counselor (PEC) Program. Welcome to be our PEC online teacher!</p>
         <p>The next steps will be: </p>
         <p>1.Mimi Ho (mimi.ho@dreamon-edu.com) in LA will contact you for signing the contract within three working days.</p>

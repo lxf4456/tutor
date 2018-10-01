@@ -47,10 +47,8 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="top">
-        <p>Dear${params[0]}, </p>
-    </div>
     <div class="medium">
+        <p>Dear ${params[0]}, </p>
         <p>Thank you for your interest on our PEC (Private Education Counselor) Online Program.As a result of your application for the position of PEC - Part Time Teacher, we would like to arrange an online interview with you.Please click the link below to make the appointment for interview.</p>
     </div>
 </div>

@@ -47,10 +47,8 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="top">
-        <p>Dear${params[0]}, </p>
-    </div>
     <div class="medium">
+        <p>Dear ${params[0]}, </p>
         <p>Your appointment is successful,please read the instruction closely and click the link to follow the next steps to attend the interview on ${params[1]} on time.</p>
     </div>
 </div>
