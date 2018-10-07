@@ -49,7 +49,7 @@
 <div class="wrap">
     <div class="medium">
         <p>Dear ${params[0]}, </p>
-        <p>This is a gentle reminder that the interview is on ${params[0]} will be in the online room waiting for you as scheduled. </p>
+        <p>This is a gentle reminder that the interview is on ${params[1]}. ${params[2]} will be in the online room waiting for you as scheduled. </p>
         <p>Look forward to seeing you. </p>
     </div>
 </div>

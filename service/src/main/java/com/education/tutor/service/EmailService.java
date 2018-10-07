@@ -1,5 +1,8 @@
 package com.education.tutor.service;
 
+import com.education.tutor.api.EmailUser;
+import com.education.tutor.db.mapper.CommonMapper;
+import com.education.tutor.util.DateUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.apache.commons.logging.Log;
@@ -7,14 +10,15 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.commons.mail.HtmlEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class EmailService {
@@ -32,6 +36,13 @@ public class EmailService {
 
 	@Value("${smtp.password}")
 	String smtpPassword;
+
+
+	@Autowired
+	private CommonMapper commonMapper;
+
+	@Autowired
+	private EmailService emailService;
 
 
 
@@ -99,6 +110,63 @@ public class EmailService {
 			String templateName, String[] params, List<File> attachments) {
 		// TODO need to implement
 		return 0;
+	}
+
+
+	@Scheduled(cron = "0 0 * * * ?")
+	public void pingQCloud() {
+		try {
+			System.out.println("time==================="+DateUtils.getDateStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
+			List<EmailUser> interviews = commonMapper.getInterview();
+			for(EmailUser eu:interviews){
+				if(getDatePoor(eu.getStart(),new Date())==24){
+					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "INTERVIEW", "en", "interview3",
+							new String[]{eu.getUserName(),getTime(eu.getTimezone(),eu.getStart()),eu.getVaule()});
+				}
+			}
+
+
+			List<EmailUser> courseware = commonMapper.getCourseware();
+			for(EmailUser eu:courseware){
+				if(getDatePoor(eu.getStart(),new Date())==48){
+					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "INTERVIEW", "en", "courseware",
+							new String[]{eu.getUserName()});
+				}
+			}
+
+
+			List<EmailUser> studentEvaluation = commonMapper.getStudentEvaluation();
+			for(EmailUser eu:studentEvaluation){
+				if(getDatePoor(eu.getStart(),new Date())==24){
+					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "INTERVIEW", "en", "feedback",
+							new String[]{eu.getUserName()});
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public  int getDatePoor(Date endDate, Date nowDate) {
+
+		long nd = 1000 * 24 * 60 * 60;
+		long nh = 1000 * 60 * 60;
+
+		// 获得两个时间的毫秒时间差异
+		long diff = endDate.getTime() - nowDate.getTime();
+		// 计算差多少天
+		long day = diff / nd;
+		// 计算差多少小时
+		long hour = diff % nd / nh;
+		return (int)hour;
+	}
+
+	public String  getTime(String timezone,Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		sdf.setTimeZone(TimeZone.getTimeZone(timezone));  // 设置时区
+		return sdf.format(date);
+
 	}
 
 }
