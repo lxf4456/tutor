@@ -49,8 +49,8 @@
 <div class="wrap">
     <div class="medium">
         <p>Dear ${params[0]}, </p>
-        <p>Thank you for your interest on our PEC (Private Education Counselor) Online Program.As a result of your application for the position of PEC - Part Time Teacher, we would like to arrange an online interview with you.Please log on the homepage to make the appointment for interview.If you need to postpone the invitation please choose the date to resend when 3 days later,a week later,a month later...the application will be considered canceled without reply,or you could send the email to_____ we can make an agreement on which day and time for the interview. </p>
-        <p>Look forward to seeing you. </p>
+        <p>This is a reminder that your class with the student will start within 48 hours and the teaching materials hasn't been uploaded. Please go to the website to check.</p>
+
     </div>
 </div>
 </body>
