@@ -113,10 +113,10 @@ public class EmailService {
 	}
 
 
-	@Scheduled(cron = "0 0 * * * ?")
-	public void pingQCloud() {
+	@Scheduled(cron = "0 0 0/1 * * ? ")
+	public void time1() {
 		try {
-			System.out.println("time==================="+DateUtils.getDateStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
+			System.out.println("time=====1=============="+DateUtils.getDateStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
 			List<EmailUser> interviews = commonMapper.getInterview();
 			for(EmailUser eu:interviews){
 				if(getDatePoor(eu.getStart(),new Date())==24){
@@ -129,7 +129,7 @@ public class EmailService {
 			List<EmailUser> courseware = commonMapper.getCourseware();
 			for(EmailUser eu:courseware){
 				if(getDatePoor(eu.getStart(),new Date())==48){
-					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "INTERVIEW", "en", "courseware",
+					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "COURSEWARE", "en", "courseware",
 							new String[]{eu.getUserName()});
 				}
 			}
@@ -138,7 +138,7 @@ public class EmailService {
 			List<EmailUser> studentEvaluation = commonMapper.getStudentEvaluation();
 			for(EmailUser eu:studentEvaluation){
 				if(getDatePoor(eu.getStart(),new Date())==24){
-					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "INTERVIEW", "en", "feedback",
+					emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "EVALUATION", "en", "feedback",
 							new String[]{eu.getUserName()});
 				}
 			}
@@ -147,6 +147,17 @@ public class EmailService {
 			e.printStackTrace();
 		}
 	}
+
+	@Scheduled(cron = "0 0 0 ? * SAT ")
+	public void time2() {
+		System.out.println("time======2============="+DateUtils.getDateStr(new Date(),"yyyy-MM-dd HH:mm:ss"));
+		List<EmailUser> interviews = commonMapper.getSchedule();
+		for(EmailUser eu:interviews){
+			emailService.sendEmail(new String[]{eu.getEmail()}, null, null, "schedule", "en", "schedule",
+						new String[]{eu.getUserName()});
+		}
+	}
+
 
 	public  int getDatePoor(Date endDate, Date nowDate) {
 

@@ -21,4 +21,10 @@ public interface CommonMapper {
             "  and c.primary_teacher_id = t.id and ss.`delete_flag` = 'IN_FORCE' and cs.`delete_flag` = 'IN_FORCE' and c.`delete_flag` = 'IN_FORCE' and t.`delete_flag` = 'IN_FORCE' and ss.student_evaluation is null")
     public List<EmailUser> getStudentEvaluation();
 
+
+    @Select("select t.first_name as userName,cs.start as start,cs.end as end,t.email,t.timezone  from  course_schedule cs,course c ,teacher t where cs.course_id = c.id" +
+            "   and c.primary_teacher_id = t.id and cs.`delete_flag` = 'IN_FORCE' and c.`delete_flag` = 'IN_FORCE' and t.`delete_flag` = 'IN_FORCE' and cs.start > now()" +
+            "   group by t.id")
+    public List<EmailUser> getSchedule();
+
 }
