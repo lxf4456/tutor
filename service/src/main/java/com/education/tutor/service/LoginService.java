@@ -78,12 +78,12 @@ public class LoginService {
         }
         List<TblRegion> records = tblDataRegionMapper.selectByExample(example);
         //省份按字母排序
-        records.sort((a1, a2) -> (a1.getNameEn().compareTo(a2.getNameEn())));
+        records.sort((a1, a2) -> (a1.getName().compareTo(a2.getName())));
         for (TblRegion d : records) {
             Area e = new Area();
             e.setId(d.getId());
             if (req.getLang() == null || "en".equalsIgnoreCase(req.getLang())) {
-                e.setName(d.getNameEn());
+                e.setName(d.getName());
             } else {
                 e.setName(d.getName());
             }
