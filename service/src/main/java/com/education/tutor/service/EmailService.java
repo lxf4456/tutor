@@ -177,10 +177,11 @@ public class EmailService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
+		int hour = 8;
 		if(timezone.indexOf(":")>0){
-			int hour = Integer.parseInt(timezone.split(":")[1]);
-			calendar.add(Calendar.HOUR,hour);
+			hour = Integer.parseInt(timezone.split(":")[1]);
 		}
+		calendar.add(Calendar.HOUR,hour);
 		return sdf.format(calendar.getTime());
 
 	}
