@@ -173,11 +173,17 @@ public class EmailService {
 		return (int)hour;
 	}
 
-	public String  getTime(String timezone,Date date) {
+	public static String  getTime(String timezone,Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		sdf.setTimeZone(TimeZone.getTimeZone(timezone));  // 设置时区
-		return sdf.format(date);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		if(timezone.indexOf(":")>0){
+			int hour = Integer.parseInt(timezone.split(":")[1]);
+			calendar.add(Calendar.HOUR,hour);
+		}
+		return sdf.format(calendar.getTime());
 
 	}
+
 
 }
