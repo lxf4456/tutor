@@ -178,10 +178,19 @@ public class EmailService {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 		int hour = 8;
-		if(timezone.indexOf(":")>0){
-			hour = Integer.parseInt(timezone.split(":")[1]);
+		int minute = 0;
+		if(timezone.indexOf(" ")>0){
+			String time = timezone.split(":")[1];
+			if(time.indexOf(":")>0){
+				hour = Integer.parseInt(time.split(":")[0]);
+				minute = Integer.parseInt(time.split(":")[1]);
+
+			}else{
+				hour = Integer.parseInt(time);
+			}
 		}
 		calendar.add(Calendar.HOUR,hour);
+		calendar.add(Calendar.MINUTE,minute);
 		return sdf.format(calendar.getTime());
 
 	}
