@@ -323,16 +323,16 @@ public class LiveService {
         res.setCode(0);
         return res;
     }
-
     public Date getUTCToCST(String UTCStr) throws ParseException {
-            Date date = null;
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
-            date = sdf.parse(UTCStr);
-            System.out.println("UTC时间: " + date);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            calendar.set(Calendar.HOUR, calendar.get(Calendar.HOUR) + 8);
-            //calendar.getTime() 返回的是Date类型，也可以使用calendar.getTimeInMillis()获取时间戳
-            return calendar.getTime();
+        Date date = null;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S'Z'");
+        date = sdf.parse(UTCStr);
+        System.out.println("UTC时间: " + date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(Calendar.HOUR, + 8);
+        calendar.add(Calendar.MINUTE,-15);
+        //calendar.getTime() 返回的是Date类型，也可以使用calendar.getTimeInMillis()获取时间戳
+        return calendar.getTime();
     }
 }
