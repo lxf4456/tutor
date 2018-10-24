@@ -53,7 +53,7 @@ public class LiveService {
 
 
         //String title, boolean video, Date startTime, int duration, String roomType
-        com.education.duobei.vo.CreateRoomRes createRoomRes = duoBeiService.createRoom(req.getTitle(),true, getUTCToCST(req.getStartTime()),req.getLength(),roomType);
+        com.education.duobei.vo.CreateRoomRes createRoomRes = duoBeiService.createRoom(req.getTitle(),true, getUTCToCST(req.getStartTime()),req.getLength()+100,roomType);
 
         if(!createRoomRes.isSuccess()){
             res.setCode(101);
@@ -86,7 +86,7 @@ public class LiveService {
         //编辑课程时间
         try {
             logger.debug(req.getRoomId()+"--------------"+req.getLangth());
-            duoBeiService.updateRoomSchedule(req.getRoomId(), getUTCToCST(req.getStartTime()), req.getLangth());
+            duoBeiService.updateRoomSchedule(req.getRoomId(), getUTCToCST(req.getStartTime()), req.getLangth()+100);
         }catch (Exception e){
             e.printStackTrace();
         }
