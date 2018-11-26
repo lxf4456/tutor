@@ -142,10 +142,18 @@ public class CommonController extends AuthenticatedController {
 //		message.setSentDate(DateUtils.getNowTime());
 //		JavaMailSender.send(message);
 		
-		
+		String text = req.getText();
+		String[] tests = new String[]{};
+		if(text.indexOf(",")>0){
+			tests = text.split(",");
+		}else {
+			tests = new String[]{ req.getText()};
+		}
+
+
 		try {
 			 emailService.sendEmail(new String[]{req.getTo()}, null, null, req.getSubject(), req.getLang(), req.getTemplateName(),
-		                new String[]{req.getText()});
+					 tests);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
