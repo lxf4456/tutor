@@ -318,7 +318,7 @@ public class LiveService {
             deviceType = DuobeiYunClient.DEVICE_TYPE_MOBILE;
         }
 
-        com.education.duobei.vo.GetRoomEnterUrlRes cres = duoBeiService.generateRoomEnterUrl(req.getUserName(),req.getNickname(),req.getRoomId(),userRole,deviceType);
+        com.education.duobei.vo.GetRoomEnterUrlRes cres = duoBeiService.generateRoomEnterUrl(req.getUserName().trim(),req.getNickname().trim(),req.getRoomId(),userRole,deviceType);
         res.setUrl(cres.getUrl());
         res.setCode(0);
         return res;
